@@ -19,18 +19,20 @@ interface HostCardProps {
 
 function HostCard({ name, role, bio, cardRef, innerRef, zIndex, imageUrl }: HostCardProps) {
   return (
-    <div 
+    <article 
       ref={cardRef}
-      className="absolute top-1/2 left-1/2 w-[85vw] max-w-sm aspect-[3/4] perspective-[1000px] will-change-transform"
+      className="absolute top-1/2 left-1/2 w-[85vw] max-w-sm aspect-[3/4] perspective-[1000px] will-change-transform group"
       style={{ zIndex }}
+      tabIndex={0}
+      aria-label={`${name}, ${role}`}
     >
       <div 
         ref={innerRef}
-        className="relative w-full h-full [transform-style:preserve-3d] will-change-transform"
+        className="relative w-full h-full [transform-style:preserve-3d] will-change-transform group-focus:[transform:rotateY(180deg)] transition-transform duration-700"
       >
         {/* Front of Card (Image) */}
-        <div className="absolute inset-0 [backface-visibility:hidden] bg-neutral-900 border border-white/10 group">
-          {imageUrl ? <img src={imageUrl} alt={name} className="absolute inset-0 w-full h-full object-cover object-center" /> : <div className="absolute inset-0 bg-neutral-800" />}
+        <div className="absolute inset-0 [backface-visibility:hidden] bg-neutral-900 border border-white/10" aria-hidden="true">
+          {imageUrl ? <img src={imageUrl} alt="" className="absolute inset-0 w-full h-full object-cover object-center" /> : <div className="absolute inset-0 bg-neutral-800" />}
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10" />
 
           {/* Folded Corner Effect */}
@@ -52,13 +54,13 @@ function HostCard({ name, role, bio, cardRef, innerRef, zIndex, imageUrl }: Host
         {/* Back of Card (Bio) */}
         <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-neutral-900 border border-white/10 p-8 flex flex-col justify-center items-center text-center">
           <h2 className="font-display text-3xl mb-6 uppercase text-white">{name}</h2>
-          <div className="w-12 h-[1px] bg-neutral-700 mb-6"></div>
+          <div className="w-12 h-[1px] bg-neutral-700 mb-6" aria-hidden="true"></div>
           <p className="text-neutral-300 text-sm md:text-base leading-relaxed">
             {bio}
           </p>
         </div>
       </div>
-    </div>
+    </article>
   );
 }
 
@@ -141,9 +143,9 @@ export default function MeetTheHost() {
       {/* Pinned Animation Section */}
       <div ref={containerRef} className="h-screen w-full relative overflow-hidden flex flex-col">
         {/* Header section */}
-        <div className="pt-16 px-6 sm:px-8 md:px-12 lg:px-16 max-w-7xl mx-auto w-full relative z-30">
+        <header className="pt-16 px-6 sm:px-8 md:px-12 lg:px-16 max-w-7xl mx-auto w-full relative z-30">
           <Link to="/" className="btn-primary mb-12 text-xs font-mono tracking-widest uppercase self-start inline-flex">
-            <ArrowLeft className="w-4 h-4 mr-2" />
+            <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
             Back to Home
           </Link>
           
@@ -153,10 +155,10 @@ export default function MeetTheHost() {
           <p className="text-neutral-400 font-mono text-sm tracking-widest uppercase">
             Scroll down to reveal
           </p>
-        </div>
+        </header>
 
         {/* Cards Area */}
-        <div className="flex-grow relative w-full">
+        <div className="flex-grow relative w-full" role="list">
           <HostCard 
             name="Host Name 1"
             role="Co-Founder & DJ"
@@ -178,10 +180,10 @@ export default function MeetTheHost() {
       </div>
       
       {/* Add some padding at the bottom so it doesn't just end abruptly after unpinning */}
-      <div className="h-[50vh] flex flex-col items-center justify-center bg-[#0a0a0a] relative z-10">
-        <div className="w-[1px] h-24 bg-gradient-to-b from-white/20 to-transparent mb-8"></div>
+      <footer className="h-[50vh] flex flex-col items-center justify-center bg-[#0a0a0a] relative z-10">
+        <div className="w-[1px] h-24 bg-gradient-to-b from-white/20 to-transparent mb-8" aria-hidden="true"></div>
         <p className="text-neutral-500 font-mono tracking-widest uppercase text-sm">End of Profiles</p>
-      </div>
+      </footer>
     </motion.div>
   );
 }
