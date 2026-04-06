@@ -1,0 +1,68 @@
+{
+  "entities": {
+    "VoiceNote": {
+      "title": "Voice Note",
+      "description": "A voice note submitted by a user.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the user who submitted the voice note (optional)."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "The email address of the user who submitted the voice note."
+        },
+        "audioData": {
+          "type": "string",
+          "description": "Base64 encoded audio data."
+        },
+        "createdAt": {
+          "type": "timestamp",
+          "description": "When the voice note was submitted."
+        }
+      },
+      "required": ["email", "audioData", "createdAt"]
+    },
+    "Pitch": {
+      "title": "Pitch",
+      "description": "A podcast topic pitch submitted by a user.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the user who submitted the pitch (optional)."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "The email address of the user who submitted the pitch."
+        },
+        "topic": {
+          "type": "string",
+          "description": "The topic being pitched."
+        },
+        "createdAt": {
+          "type": "timestamp",
+          "description": "When the pitch was submitted."
+        }
+      },
+      "required": ["email", "topic", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/voice_notes/{noteId}": {
+      "schema": {
+        "$ref": "#/entities/VoiceNote"
+      },
+      "description": "Collection of all submitted voice notes."
+    },
+    "/pitches/{pitchId}": {
+      "schema": {
+        "$ref": "#/entities/Pitch"
+      },
+      "description": "Collection of all submitted podcast pitches."
+    }
+  }
+}
