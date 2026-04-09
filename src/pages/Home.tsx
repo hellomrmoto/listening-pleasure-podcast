@@ -14,7 +14,7 @@ export default function Home({ isLoading = false }: { isLoading?: boolean }) {
   const detailsRef = useRef<HTMLDivElement>(null);
   const widgetContainerRef = useRef<HTMLDivElement>(null);
   const widgetInnerRef = useRef<HTMLDivElement>(null);
-  const navContainerRef = useRef<HTMLDivElement>(null);
+  const navContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (videoRef.current) {
