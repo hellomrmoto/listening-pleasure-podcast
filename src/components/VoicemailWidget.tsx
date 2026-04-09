@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Video, Mic, Square, Play, Pause, Send, CheckCircle2, Trash2, ArrowLeft } from 'lucide-react';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { db } from '../firebase';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { db, storage } from '../firebase';
 
 export default function VoicemailWidget() {
   const [isRecording, setIsRecording] = useState(false);
@@ -171,21 +172,6 @@ export default function VoicemailWidget() {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const blobToBase64 = (blob: Blob): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        if (typeof reader.result === 'string') {
-          resolve(reader.result);
-        } else {
-          reject(new Error("Failed to convert to base64"));
-        }
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
-    });
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!audioBlob) return;
@@ -194,23 +180,26 @@ export default function VoicemailWidget() {
     setErrorMsg(null);
     
     try {
-      const base64Audio = await blobToBase64(audioBlob);
+      // Upload blob to Firebase Storage
+      const ext = recordingType === 'video' ? 'webm' : 'webm';
+      const fileName = `voice_notes/${Date.now()}_${formData.name.trim() || 'anonymous'}.${ext}`;
+      const storageRef = ref(storage, fileName);
+      const mimeType = recordingType === 'video' ? 'video/webm' : 'audio/webm';
       
-      const sizeLimit = recordingType === 'video' ? 20000000 : 5000000;
-      if (base64Audio.length > sizeLimit) {
-        throw new Error(`${recordingType === 'video' ? 'Video' : 'Audio'} file is too large. Please record a shorter message.`);
-      }
+      await uploadBytes(storageRef, audioBlob, { contentType: mimeType });
+      const downloadURL = await getDownloadURL(storageRef);
 
       const noteData: any = {
         email: formData.email,
         type: recordingType,
+        storagePath: fileName,
         createdAt: serverTimestamp()
       };
       
       if (recordingType === 'video') {
-        noteData.videoData = base64Audio;
+        noteData.videoUrl = downloadURL;
       } else {
-        noteData.audioData = base64Audio;
+        noteData.audioUrl = downloadURL;
       }
       
       if (formData.name.trim()) {
@@ -223,7 +212,7 @@ export default function VoicemailWidget() {
       setFormData({ name: '', email: '' });
       discardRecording();
     } catch (error: any) {
-      console.error("Error adding document: ", error);
+      console.error("Error uploading message: ", error);
       setErrorMsg(error.message || "Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
@@ -231,8 +220,8 @@ export default function VoicemailWidget() {
   };
 
   return (
-    <section aria-label="Voicemail Widget" className="w-full max-w-[320px]">
-      <div className="bg-neutral-900/50 backdrop-blur-xl border border-white/10 p-5 sm:p-6 rounded-2xl shadow-2xl relative overflow-hidden" aria-live="polite">
+    <div className="w-full max-w-[320px]">
+      <div className="bg-neutral-900/50 backdrop-blur-xl border border-white/10 p-5 sm:p-6 rounded-2xl shadow-2xl relative overflow-hidden">
         <AnimatePresence mode="wait">
           {!isSuccess ? (
             <motion.div 
@@ -259,7 +248,7 @@ export default function VoicemailWidget() {
               </div>
 
               {errorMsg && (
-                <div className="text-red-400 text-xs font-mono bg-red-400/10 p-3 rounded-lg border border-red-400/20 text-center" role="alert">
+                <div className="text-red-400 text-xs font-mono bg-red-400/10 p-3 rounded-lg border border-red-400/20 text-center">
                   {errorMsg}
                 </div>
               )}
@@ -270,20 +259,18 @@ export default function VoicemailWidget() {
                   <div className="flex gap-4 justify-center w-full py-2">
                     <button 
                       onClick={() => setRecordingType('video')} 
-                      aria-label="Record Video Voicemail"
-                      className="flex-1 flex flex-col items-center justify-center gap-3 p-6 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/20 transition-all group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
+                      className="flex-1 flex flex-col items-center justify-center gap-3 p-6 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/20 transition-all group"
                     >
-                      <div className="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center group-hover:scale-110 transition-transform" aria-hidden="true">
+                      <div className="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
                         <Video className="w-6 h-6 text-emerald-400" />
                       </div>
                       <span className="text-xs font-mono uppercase tracking-wider text-neutral-300 group-hover:text-white">Video</span>
                     </button>
                     <button 
                       onClick={() => setRecordingType('audio')} 
-                      aria-label="Record Audio Voicemail"
-                      className="flex-1 flex flex-col items-center justify-center gap-3 p-6 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/20 transition-all group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
+                      className="flex-1 flex flex-col items-center justify-center gap-3 p-6 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/20 transition-all group"
                     >
-                      <div className="w-12 h-12 rounded-full bg-[#FFD700]/20 flex items-center justify-center group-hover:scale-110 transition-transform" aria-hidden="true">
+                      <div className="w-12 h-12 rounded-full bg-[#FFD700]/20 flex items-center justify-center group-hover:scale-110 transition-transform">
                         <Mic className="w-6 h-6 text-[#FFD700]" />
                       </div>
                       <span className="text-xs font-mono uppercase tracking-wider text-neutral-300 group-hover:text-white">Audio</span>
@@ -297,7 +284,7 @@ export default function VoicemailWidget() {
                     </p>
                     <button
                       onClick={requestPermissions}
-                      className="mt-2 bg-white text-black font-display text-xs uppercase tracking-widest py-2 px-6 rounded-full hover:bg-neutral-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
+                      className="mt-2 bg-white text-black font-display text-xs uppercase tracking-widest py-2 px-6 rounded-full hover:bg-neutral-200 transition-colors"
                     >
                       Allow Access
                     </button>
@@ -323,7 +310,7 @@ export default function VoicemailWidget() {
                             className="absolute inset-0 bg-[#FFD700] rounded-full blur-3xl"
                           />
                         )}
-                        <Mic className={`w-8 h-8 ${isRecording ? 'text-[#FFD700]' : 'text-neutral-500'} relative z-10`} aria-hidden="true" />
+                        <Mic className={`w-8 h-8 ${isRecording ? 'text-[#FFD700]' : 'text-neutral-500'} relative z-10`} />
                       </div>
                     )}
                     
@@ -337,7 +324,6 @@ export default function VoicemailWidget() {
                       )}
                       <motion.button
                         onClick={isRecording ? stopRecording : startRecording}
-                        aria-label={isRecording ? "Stop recording" : "Start recording"}
                         animate={!isRecording ? { 
                           y: [0, -4, 0],
                           boxShadow: ["0px 0px 0px rgba(255,215,0,0)", "0px 5px 15px rgba(255,215,0,0.2)", "0px 0px 0px rgba(255,215,0,0)"]
@@ -352,21 +338,20 @@ export default function VoicemailWidget() {
                           boxShadow: "0px 0px 20px rgba(255,215,0,0.5)" 
                         } : { scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className={`w-16 h-16 rounded-full flex items-center justify-center relative z-10 transition-colors duration-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-yellow-400 ${
+                        className={`w-16 h-16 rounded-full flex items-center justify-center relative z-10 transition-colors duration-300 ${
                           isRecording 
                             ? 'bg-red-500 hover:bg-red-600 text-white' 
                             : 'bg-white text-black'
                         }`}
                       >
-                        {isRecording ? <Square className="w-6 h-6 fill-current" aria-hidden="true" /> : (recordingType === 'video' ? <Video className="w-7 h-7 text-[#FFD700]" aria-hidden="true" /> : <Mic className="w-7 h-7 text-[#FFD700]" aria-hidden="true" />)}
+                        {isRecording ? <Square className="w-6 h-6 fill-current" /> : (recordingType === 'video' ? <Video className="w-7 h-7 text-[#FFD700]" /> : <Mic className="w-7 h-7 text-[#FFD700]" />)}
                       </motion.button>
                     </div>
-                    <div className="font-mono text-sm tracking-widest" aria-live="polite">
-                      <span className="sr-only">Recording time: </span>
+                    <div className="font-mono text-sm tracking-widest">
                       {formatTime(recordingTime)} / {formatTime(MAX_RECORDING_TIME)}
                     </div>
                     {isRecording && (
-                      <div className="text-red-400 text-[10px] font-mono uppercase tracking-widest animate-pulse" aria-live="assertive">
+                      <div className="text-red-400 text-[10px] font-mono uppercase tracking-widest animate-pulse">
                         Recording...
                       </div>
                     )}
@@ -398,13 +383,11 @@ export default function VoicemailWidget() {
                       <div className="flex items-center justify-between">
                         <button 
                           onClick={togglePlayback}
-                          aria-label={isPlaying ? "Pause playback" : "Play recording"}
-                          className="w-10 h-10 rounded-full bg-emerald-500 hover:bg-emerald-600 text-black flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-yellow-400"
+                          className="w-10 h-10 rounded-full bg-emerald-500 hover:bg-emerald-600 text-black flex items-center justify-center transition-colors"
                         >
-                          {isPlaying ? <Pause className="w-4 h-4 fill-current" aria-hidden="true" /> : <Play className="w-4 h-4 fill-current ml-1" aria-hidden="true" />}
+                          {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-1" />}
                         </button>
-                        <div className="font-mono text-xs tracking-widest text-emerald-400" aria-live="polite">
-                          <span className="sr-only">Playback time: </span>
+                        <div className="font-mono text-xs tracking-widest text-emerald-400">
                           {formatTime(playbackTime)}
                         </div>
                       </div>
@@ -420,10 +403,9 @@ export default function VoicemailWidget() {
 
                     <button 
                       onClick={discardRecording}
-                      aria-label="Discard recording and rerecord"
-                      className="text-neutral-400 hover:text-red-400 text-[10px] font-mono uppercase tracking-widest flex items-center gap-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded px-2 py-1"
+                      className="text-neutral-400 hover:text-red-400 text-[10px] font-mono uppercase tracking-widest flex items-center gap-1.5 transition-colors"
                     >
-                      <Trash2 className="w-3 h-3" aria-hidden="true" />
+                      <Trash2 className="w-3 h-3" />
                       Discard
                     </button>
                   </div>
@@ -439,7 +421,7 @@ export default function VoicemailWidget() {
                     id="name"
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    className="bg-transparent border-b border-white/20 py-2 text-sm text-white focus:outline-none focus:border-white transition-colors placeholder:text-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded px-1"
+                    className="bg-transparent border-b border-white/20 py-2 text-sm text-white focus:outline-none focus:border-white transition-colors placeholder:text-neutral-700"
                     placeholder="What do we call you?"
                     disabled={!audioUrl}
                   />
@@ -451,10 +433,9 @@ export default function VoicemailWidget() {
                     type="email" 
                     id="email"
                     required
-                    aria-required="true"
                     value={formData.email}
                     onChange={(e) => setFormData({...formData, email: e.target.value})}
-                    className="bg-transparent border-b border-white/20 py-2 text-sm text-white focus:outline-none focus:border-white transition-colors placeholder:text-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded px-1"
+                    className="bg-transparent border-b border-white/20 py-2 text-sm text-white focus:outline-none focus:border-white transition-colors placeholder:text-neutral-700"
                     placeholder="Where do we reach you?"
                     disabled={!audioUrl}
                   />
@@ -463,15 +444,14 @@ export default function VoicemailWidget() {
                 <button 
                   type="submit" 
                   disabled={isSubmitting || !audioUrl}
-                  aria-label={isSubmitting ? "Sending voicemail..." : "Send Voicemail"}
-                  className="mt-2 w-full bg-white text-black font-display text-sm uppercase tracking-widest py-3 rounded-lg hover:bg-neutral-200 transition-colors flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed group focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-yellow-400"
+                  className="mt-2 w-full bg-white text-black font-display text-sm uppercase tracking-widest py-3 rounded-lg hover:bg-neutral-200 transition-colors flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed group"
                 >
                   {isSubmitting ? (
-                    <div className="w-4 h-4 border-2 border-black/20 border-t-black rounded-full animate-spin" aria-hidden="true" />
+                    <div className="w-4 h-4 border-2 border-black/20 border-t-black rounded-full animate-spin" />
                   ) : (
                     <>
                       Send
-                      <Send className="w-3 h-3 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" aria-hidden="true" />
+                      <Send className="w-3 h-3 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                     </>
                   )}
                 </button>
@@ -484,10 +464,10 @@ export default function VoicemailWidget() {
               animate={{ opacity: 1, scale: 1 }}
               className="flex flex-col items-center justify-center text-center py-8 relative z-10"
             >
-              <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mb-4 text-emerald-400" aria-hidden="true">
+              <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mb-4 text-emerald-400">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
-              <h3 className="font-display text-xl uppercase mb-2" tabIndex={-1} autoFocus>Sent.</h3>
+              <h3 className="font-display text-xl uppercase mb-2">Sent.</h3>
               <p className="text-neutral-400 text-sm mb-6">
                 We got your message loud and clear.
               </p>
@@ -496,7 +476,7 @@ export default function VoicemailWidget() {
                   setIsSuccess(false);
                   resetAll();
                 }}
-                className="font-mono text-[10px] tracking-widest uppercase border border-white/20 py-2 px-4 rounded-full hover:bg-white hover:text-black transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
+                className="font-mono text-[10px] tracking-widest uppercase border border-white/20 py-2 px-4 rounded-full hover:bg-white hover:text-black transition-colors"
               >
                 Leave Another
               </button>
@@ -504,6 +484,6 @@ export default function VoicemailWidget() {
           )}
         </AnimatePresence>
       </div>
-    </section>
+    </div>
   );
 }

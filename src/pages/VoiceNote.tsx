@@ -191,9 +191,7 @@ export default function VoiceNote() {
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
       </div>
 
-      <div 
-      className="flex-1 relative z-10 max-w-7xl mx-auto w-full px-6 sm:px-8 md:px-12 lg:px-16 py-12 flex flex-col md:flex-row gap-16 items-center justify-center"
-    >
+      <div className="flex-1 relative z-10 max-w-7xl mx-auto w-full px-6 sm:px-8 md:px-12 lg:px-16 py-12 flex flex-col md:flex-row gap-16 items-center justify-center">
         
         {/* Left Column: Copy */}
         <div className="w-full md:w-1/2 flex flex-col">
@@ -207,17 +205,14 @@ export default function VoiceNote() {
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-blue-500">Voicemail.</span>
           </h1>
           
-          <p className="text-lg md:text-xl text-neutral-400 max-w-md leading-relaxed mb-6">
+          <p className="text-lg md:text-xl text-neutral-400 max-w-md leading-relaxed mb-10">
             Got something to say? Leave us a voice note. We might play it on the next episode. Keep it under 60 seconds.
-          </p>
-          <p className="text-sm text-neutral-500 max-w-md leading-relaxed mb-10">
-            Prefer to write? <Link to="/pitch" className="text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded px-1">Leave a text message instead.</Link>
           </p>
         </div>
 
         {/* Right Column: Recorder & Form */}
         <div className="w-full md:w-1/2 max-w-md">
-          <div className="bg-neutral-900/50 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-2xl relative overflow-hidden" aria-live="polite">
+          <div className="bg-neutral-900/50 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-2xl relative overflow-hidden">
             <AnimatePresence mode="wait">
               {!isSuccess ? (
                 <motion.div 
@@ -242,22 +237,20 @@ export default function VoiceNote() {
                           )}
                           <button
                             onClick={isRecording ? stopRecording : startRecording}
-                            aria-label={isRecording ? "Stop recording" : "Start recording"}
-                            className={`w-24 h-24 rounded-full flex items-center justify-center relative z-10 transition-all duration-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-yellow-400 ${
+                            className={`w-24 h-24 rounded-full flex items-center justify-center relative z-10 transition-all duration-300 ${
                               isRecording 
                                 ? 'bg-red-500 hover:bg-red-600 text-white' 
                                 : 'bg-white hover:bg-neutral-200 text-black'
                             }`}
                           >
-                            {isRecording ? <Square className="w-8 h-8 fill-current" aria-hidden="true" /> : <Mic className="w-10 h-10" aria-hidden="true" />}
+                            {isRecording ? <Square className="w-8 h-8 fill-current" /> : <Mic className="w-10 h-10" />}
                           </button>
                         </div>
-                        <div className="font-mono text-xl tracking-widest" aria-live="polite">
-                          <span className="sr-only">Recording time: </span>
+                        <div className="font-mono text-xl tracking-widest">
                           {formatTime(recordingTime)} / {formatTime(MAX_RECORDING_TIME)}
                         </div>
                         {isRecording && (
-                          <div className="text-red-400 text-xs font-mono uppercase tracking-widest animate-pulse" aria-live="assertive" role="status">
+                          <div className="text-red-400 text-xs font-mono uppercase tracking-widest animate-pulse">
                             Recording...
                           </div>
                         )}
@@ -270,26 +263,23 @@ export default function VoiceNote() {
                           onTimeUpdate={handleTimeUpdate}
                           onEnded={handleAudioEnded}
                           className="hidden"
-                          aria-label="Recorded voicemail"
                         />
                         
                         <div className="w-full bg-black/40 rounded-2xl p-6 border border-white/10 flex flex-col gap-4">
                           <div className="flex items-center justify-between">
                             <button 
                               onClick={togglePlayback}
-                              aria-label={isPlaying ? "Pause playback" : "Play recording"}
-                              className="w-12 h-12 rounded-full bg-emerald-500 hover:bg-emerald-600 text-black flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-yellow-400"
+                              className="w-12 h-12 rounded-full bg-emerald-500 hover:bg-emerald-600 text-black flex items-center justify-center transition-colors"
                             >
-                              {isPlaying ? <Pause className="w-5 h-5 fill-current" aria-hidden="true" /> : <Play className="w-5 h-5 fill-current ml-1" aria-hidden="true" />}
+                              {isPlaying ? <Pause className="w-5 h-5 fill-current" /> : <Play className="w-5 h-5 fill-current ml-1" />}
                             </button>
-                            <div className="font-mono text-sm tracking-widest text-emerald-400" aria-live="polite">
-                              <span className="sr-only">Playback time: </span>
+                            <div className="font-mono text-sm tracking-widest text-emerald-400">
                               {formatTime(playbackTime)}
                             </div>
                           </div>
                           
                           {/* Progress Bar (Visual only) */}
-                          <div className="w-full h-1 bg-white/20 rounded-full overflow-hidden" role="progressbar" aria-valuenow={audioRef.current && audioRef.current.duration ? Math.round((playbackTime / audioRef.current.duration) * 100) : 0} aria-valuemin={0} aria-valuemax={100}>
+                          <div className="w-full h-1 bg-white/20 rounded-full overflow-hidden">
                             <div 
                               className="h-full bg-emerald-500 transition-all duration-100 ease-linear"
                               style={{ width: audioRef.current && audioRef.current.duration ? `${(playbackTime / audioRef.current.duration) * 100}%` : '0%' }}
@@ -299,10 +289,9 @@ export default function VoiceNote() {
 
                         <button 
                           onClick={discardRecording}
-                          aria-label="Discard recording and rerecord"
-                          className="text-neutral-400 hover:text-red-400 text-xs font-mono uppercase tracking-widest flex items-center gap-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded px-2 py-1"
+                          className="text-neutral-400 hover:text-red-400 text-xs font-mono uppercase tracking-widest flex items-center gap-2 transition-colors"
                         >
-                          <Trash2 className="w-4 h-4" aria-hidden="true" />
+                          <Trash2 className="w-4 h-4" />
                           Discard & Rerecord
                         </button>
                       </div>
@@ -310,7 +299,7 @@ export default function VoiceNote() {
                   </div>
 
                   {/* Form Section */}
-                  <form onSubmit={handleSubmit} className={`flex flex-col gap-6 transition-opacity duration-300 ${!audioUrl ? 'opacity-50 pointer-events-none' : 'opacity-100'}`} noValidate>
+                  <form onSubmit={handleSubmit} className={`flex flex-col gap-6 transition-opacity duration-300 ${!audioUrl ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
                     <div className="flex flex-col gap-2">
                       <label htmlFor="name" className="font-mono text-xs tracking-widest text-neutral-400 uppercase">Your Name (Optional)</label>
                       <input 
@@ -318,7 +307,7 @@ export default function VoiceNote() {
                         id="name"
                         value={formData.name}
                         onChange={(e) => setFormData({...formData, name: e.target.value})}
-                        className="bg-transparent border-b border-white/20 py-3 text-white focus:outline-none focus:border-white transition-colors placeholder:text-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded px-2"
+                        className="bg-transparent border-b border-white/20 py-3 text-white focus:outline-none focus:border-white transition-colors placeholder:text-neutral-700"
                         placeholder="What do we call you?"
                         disabled={!audioUrl}
                       />
@@ -330,19 +319,16 @@ export default function VoiceNote() {
                         type="email" 
                         id="email"
                         required
-                        aria-required="true"
-                        aria-invalid={errorMsg ? "true" : "false"}
-                        aria-describedby={errorMsg ? "voicemail-error" : undefined}
                         value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
-                        className="bg-transparent border-b border-white/20 py-3 text-white focus:outline-none focus:border-white transition-colors placeholder:text-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded px-2"
+                        className="bg-transparent border-b border-white/20 py-3 text-white focus:outline-none focus:border-white transition-colors placeholder:text-neutral-700"
                         placeholder="Where do we reach you?"
                         disabled={!audioUrl}
                       />
                     </div>
 
                     {errorMsg && (
-                      <div id="voicemail-error" className="text-red-400 text-sm font-mono bg-red-400/10 p-3 rounded-lg border border-red-400/20" aria-live="assertive" role="alert">
+                      <div className="text-red-400 text-sm font-mono bg-red-400/10 p-3 rounded-lg border border-red-400/20">
                         {errorMsg}
                       </div>
                     )}
@@ -350,15 +336,14 @@ export default function VoiceNote() {
                     <button 
                       type="submit" 
                       disabled={isSubmitting || !audioUrl}
-                      aria-label={isSubmitting ? "Sending voicemail..." : "Send Voicemail"}
-                      className="mt-4 w-full bg-white text-black font-display uppercase tracking-widest py-4 rounded-xl hover:bg-neutral-200 transition-colors flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed group focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-yellow-400"
+                      className="mt-4 w-full bg-white text-black font-display uppercase tracking-widest py-4 rounded-xl hover:bg-neutral-200 transition-colors flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed group"
                     >
                       {isSubmitting ? (
-                        <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" aria-hidden="true" />
+                        <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" />
                       ) : (
                         <>
                           Send Voicemail
-                          <Send className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" aria-hidden="true" />
+                          <Send className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                         </>
                       )}
                     </button>
@@ -371,16 +356,16 @@ export default function VoiceNote() {
                   animate={{ opacity: 1, scale: 1 }}
                   className="flex flex-col items-center justify-center text-center py-12 relative z-10"
                 >
-                  <div className="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center mb-6 text-emerald-400" aria-hidden="true">
-                    <CheckCircle2 className="w-10 h-10" aria-hidden="true" />
+                  <div className="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center mb-6 text-emerald-400">
+                    <CheckCircle2 className="w-10 h-10" />
                   </div>
-                  <h3 className="font-display text-3xl uppercase mb-4" tabIndex={-1} autoFocus>Voicemail Sent.</h3>
+                  <h3 className="font-display text-3xl uppercase mb-4">Voicemail Sent.</h3>
                   <p className="text-neutral-400 mb-8">
                     We got your message loud and clear. If we play it on the show, we'll let you know.
                   </p>
                   <button 
                     onClick={() => setIsSuccess(false)}
-                    className="font-mono text-xs tracking-widest uppercase border border-white/20 py-3 px-6 rounded-full hover:bg-white hover:text-black transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
+                    className="font-mono text-xs tracking-widest uppercase border border-white/20 py-3 px-6 rounded-full hover:bg-white hover:text-black transition-colors"
                   >
                     Leave Another
                   </button>
@@ -389,7 +374,7 @@ export default function VoiceNote() {
             </AnimatePresence>
           </div>
         </div>
-      </main>
+      </div>
     </motion.div>
   );
 }

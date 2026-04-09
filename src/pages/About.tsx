@@ -5,9 +5,11 @@ import { ArrowLeft } from 'lucide-react';
 
 export default function About() {
   return (
-    <main 
-      id="main-content"
-      role="main"
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5, ease: "easeInOut" }}
       className="min-h-screen bg-black text-white font-sans selection:bg-white selection:text-black p-6 sm:p-8 md:p-12 lg:p-16"
     >
       <div className="max-w-7xl mx-auto">
@@ -67,6 +69,6 @@ export default function About() {
           </div>
         </div>
       </div>
-    </main>
+    </motion.div>
   );
 }

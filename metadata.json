@@ -1,8 +1,5 @@
 {
-  "name": "Remix: Listening Pleasure Podcast",
+  "name": "Listening Pleasure Podcast",
   "description": "A dark-themed, futuristic podcast website with episodes, gallery, pitch submission, and voicemail recording.",
-  "requestFramePermissions": [
-    "microphone",
-    "camera"
-  ]
+  "requestFramePermissions": ["microphone", "camera"]
 }

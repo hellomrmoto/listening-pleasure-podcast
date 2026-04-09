@@ -19,7 +19,9 @@ service cloud.firestore {
     // Fields:
     //   - name: string (optional, max 100 chars) - The name of the submitter
     //   - email: string (required, valid email, max 255 chars) - The email of the submitter
-    //   - audioData: string (required, max 800000 chars) - Base64 encoded audio
+    //   - audioData: string (optional, max 10MB) - Base64 encoded audio
+    //   - videoData: string (optional, max 30MB) - Base64 encoded video
+    //   - type: string (optional, enum: audio, video) - The type of message
     //   - createdAt: timestamp (required) - When the voice note was submitted
     //
     // ===============================================================
@@ -34,7 +36,7 @@ service cloud.firestore {
     
     function isAdmin() {
       return isAuthenticated() &&
-        (request.auth.token.email == "jwedmonds22@gmail.com" && request.auth.token.email_verified == true);
+        (request.auth.token.email == "caseydubbz2003@gmail.com" && request.auth.token.email_verified == true);
     }
     
     function hasRequiredFields(fields) {
@@ -75,15 +77,18 @@ service cloud.firestore {
     }
     
     function isValidVoiceNote() {
-      return hasRequiredFields(['email', 'audioData', 'createdAt']) &&
-             hasOnlyAllowedFields(['name', 'email', 'audioData', 'createdAt']) &&
+      return hasRequiredFields(['email', 'createdAt']) &&
+             hasOnlyAllowedFields(['name', 'email', 'audioData', 'videoData', 'audioUrl', 'videoUrl', 'storagePath', 'type', 'createdAt']) &&
              isValidOptionalString('name', 0, 100) &&
              request.resource.data.email is string &&
              request.resource.data.email.size() <= 255 &&
              isValidEmail(request.resource.data.email) &&
-             request.resource.data.audioData is string &&
-             request.resource.data.audioData.size() > 0 &&
-             request.resource.data.audioData.size() <= 800000 &&
+             isValidOptionalString('audioData', 0, 10000000) &&
+             isValidOptionalString('videoData', 0, 30000000) &&
+             isValidOptionalString('audioUrl', 0, 2000) &&
+             isValidOptionalString('videoUrl', 0, 2000) &&
+             isValidOptionalString('storagePath', 0, 500) &&
+             (!( 'type' in request.resource.data ) || request.resource.data.type in ['audio', 'video']) &&
              request.resource.data.createdAt is timestamp;
     }
     

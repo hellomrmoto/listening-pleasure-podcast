@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { PlayCircle } from 'lucide-react';
+import { PlayCircle, Instagram, Facebook } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import VoicemailWidget from '../components/VoicemailWidget';
@@ -159,7 +159,7 @@ export default function Home({ isLoading = false }: { isLoading?: boolean }) {
         </div>
         
         <div className="order-5 md:order-none col-span-1 md:col-span-4 flex flex-col justify-start md:justify-end items-end mt-8 md:mt-0 gap-6 z-50">
-          <div ref={navContainerRef} className="flex flex-wrap items-center gap-1 sm:gap-2 font-mono text-[10px] sm:text-xs tracking-[0.1em] sm:tracking-[0.2em] text-neutral-400 mt-2 bg-white/5 backdrop-blur-md border border-white/10 rounded-full p-1.5 shadow-lg">
+          <div ref={navContainerRef} className="flex flex-wrap items-center gap-1 sm:gap-2 font-mono text-[10px] sm:text-xs tracking-[0.1em] sm:tracking-[0.2em] text-neutral-400 mt-2">
             <Link 
               to="/meet-the-host"
               className="hover:text-purple-600 hover:bg-white hover:scale-105 transition-all duration-300 uppercase py-2 px-3 sm:px-5 rounded-full inline-block whitespace-nowrap"
@@ -198,14 +198,38 @@ export default function Home({ isLoading = false }: { isLoading?: boolean }) {
 
         {/* Bottom Row */}
         <div className="order-2 md:order-none col-span-1 md:col-span-6 flex flex-col justify-end mt-8 md:mt-0">
+          <div className="max-w-sm">
+            <a 
+              href="http://www.youtube.com/@ListeningPleasurePodcast"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary self-start font-mono text-xs tracking-[0.2em] uppercase"
+            >
+              Watch on YT
+              <PlayCircle className="w-4 h-4 ml-2" />
+            </a>
+          </div>
         </div>
         
         <div className="order-3 md:order-none col-span-1 md:col-span-6 flex justify-start md:justify-end items-end mt-2 md:mt-0">
-          <div className="flex flex-wrap gap-4 sm:gap-6 md:gap-8 font-mono text-[10px] sm:text-xs md:text-sm tracking-[0.15em] text-neutral-400">
-            <span className="hover:text-white transition-colors cursor-default py-1">STEREO</span>
-            <span className="hover:text-white transition-colors cursor-default py-1">HQ</span>
-            <span className="hover:text-white transition-colors cursor-default py-1">BASS-HEAVY</span>
-            <span className="hover:text-white transition-colors cursor-default py-1">SOUND-SCAPE</span>
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6 md:gap-8 font-mono text-[10px] sm:text-xs md:text-sm tracking-[0.15em] text-neutral-400">
+            <a href="https://www.patreon.com/ListeningPleasure" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors py-1" aria-label="Patreon">
+              <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 sm:w-6 sm:h-6">
+                <path d="M15.386.524c-4.764 0-8.64 3.876-8.64 8.64 0 4.75 3.876 8.613 8.64 8.613 4.75 0 8.614-3.864 8.614-8.613C24 4.4 20.136.524 15.386.524M.003 23.537h4.22V.524H.003"/>
+              </svg>
+            </a>
+            <a href="https://www.tiktok.com/@listeningpleasurepodcast" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors py-1" aria-label="TikTok">
+              <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 sm:w-6 sm:h-6">
+                <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 2.23-1.15 4.34-2.9 5.61-1.74 1.28-4.08 1.62-6.13 1.05-2.05-.56-3.74-2.02-4.52-3.96-.78-1.94-.58-4.24.53-6.02 1.1-1.78 2.98-2.93 5.06-3.15.15-.02.31-.02.46-.02v4.06c-1.04.09-2.05.65-2.65 1.49-.6.84-.75 1.96-.4 2.94.35.98 1.18 1.75 2.18 2.03 1 .28 2.11.08 2.92-.54.81-.62 1.3-1.6 1.34-2.63.05-4.5.02-9.01.03-13.51h.01z"/>
+              </svg>
+            </a>
+            <a href="https://www.instagram.com/listeningpleasurepodcast?igsh=YzQzYnlvenIyY2Y5" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors py-1" aria-label="Instagram">
+              <Instagram className="w-5 h-5 sm:w-6 sm:h-6" />
+            </a>
+            <a href="https://www.facebook.com/share/Y2bcS47qQhtPR47n/?mibextid=qi20mg" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors py-1" aria-label="Facebook">
+              <Facebook className="w-5 h-5 sm:w-6 sm:h-6" />
+            </a>
+            <Link to="/inbox" className="hover:text-white transition-colors py-1 opacity-20 hover:opacity-100 ml-2">ADMIN</Link>
           </div>
         </div>
       </div>

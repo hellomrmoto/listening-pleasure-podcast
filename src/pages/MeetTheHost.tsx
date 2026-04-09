@@ -1,189 +1,99 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ArrowLeft } from 'lucide-react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
 
 interface HostCardProps {
   name: string;
   role: string;
   bio: string;
-  cardRef: React.RefObject<HTMLDivElement | null>;
-  innerRef: React.RefObject<HTMLDivElement | null>;
-  zIndex: number;
   imageUrl?: string;
+  socials?: {
+    instagram?: string;
+    facebook?: string;
+  };
 }
 
-function HostCard({ name, role, bio, cardRef, innerRef, zIndex, imageUrl }: HostCardProps) {
+function HostCard({ name, role, bio, imageUrl, socials }: HostCardProps) {
   return (
-    <article 
-      ref={cardRef}
-      className="absolute top-1/2 left-1/2 w-[85vw] max-w-sm aspect-[3/4] perspective-[1000px] will-change-transform group"
-      style={{ zIndex }}
-      tabIndex={0}
-      aria-label={`${name}, ${role}`}
-    >
-      <div 
-        ref={innerRef}
-        className="relative w-full h-full [transform-style:preserve-3d] will-change-transform group-focus:[transform:rotateY(180deg)] transition-transform duration-700"
-      >
-        {/* Front of Card (Image) */}
-        <div className="absolute inset-0 [backface-visibility:hidden] bg-neutral-900 border border-white/10" aria-hidden="true">
-          {imageUrl ? <img src={imageUrl} alt="" className="absolute inset-0 w-full h-full object-cover object-center" /> : <div className="absolute inset-0 bg-neutral-800" />}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10" />
-
-          {/* Folded Corner Effect */}
-          <div className="absolute -top-[1px] -right-[1px] w-16 h-16 z-30 transition-all duration-300 group-hover:w-20 group-hover:h-20">
-            <div className="absolute top-0 right-0 w-full h-full bg-[#0a0a0a]" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%)' }} />
-            <div className="absolute top-0 right-0 w-full h-full drop-shadow-[-4px_4px_6px_rgba(0,0,0,0.5)]">
-              <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-neutral-200 to-neutral-500" style={{ clipPath: 'polygon(0 0, 100% 100%, 0 100%)' }}>
-                <div className="absolute inset-0 opacity-20 bg-[repeating-linear-gradient(45deg,transparent,transparent_2px,white_2px,white_4px)]" />
-              </div>
-            </div>
+    <div className="bg-neutral-900 border border-white/10 flex flex-col h-full group">
+      {/* Image Slot */}
+      <div className="relative w-full aspect-square sm:aspect-[4/3] bg-neutral-800 overflow-hidden">
+        {imageUrl ? (
+          <img 
+            src={imageUrl} 
+            alt={name} 
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+            referrerPolicy="no-referrer" 
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center text-neutral-600 font-mono text-sm uppercase tracking-widest">
+            Image Slot
           </div>
-
-          <div className="absolute bottom-0 left-0 w-full p-8 z-20">
-            <h2 className="font-display text-3xl md:text-4xl mb-2 uppercase">{name}</h2>
-            <p className="font-mono text-sm tracking-[0.2em] text-neutral-400 uppercase">{role}</p>
-          </div>
-        </div>
-
-        {/* Back of Card (Bio) */}
-        <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-neutral-900 border border-white/10 p-8 flex flex-col justify-center items-center text-center">
-          <h2 className="font-display text-3xl mb-6 uppercase text-white">{name}</h2>
-          <div className="w-12 h-[1px] bg-neutral-700 mb-6" aria-hidden="true"></div>
-          <p className="text-neutral-300 text-sm md:text-base leading-relaxed">
-            {bio}
-          </p>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/40 to-transparent opacity-90" />
+        <div className="absolute bottom-0 left-0 p-6 md:p-8">
+          <h2 className="font-display text-3xl md:text-4xl uppercase text-white mb-2">{name}</h2>
+          <p className="font-mono text-xs md:text-sm tracking-[0.2em] text-neutral-400 uppercase">{role}</p>
         </div>
       </div>
-    </article>
+
+      {/* Bio Content */}
+      <div className="p-6 md:p-8 flex flex-col flex-grow">
+        <div className="w-12 h-[1px] bg-neutral-700 mb-6 shrink-0"></div>
+        <p className="text-neutral-300 text-sm md:text-base leading-relaxed mb-8 flex-grow">
+          {bio}
+        </p>
+        {socials && (
+          <div className="flex flex-wrap gap-4 mt-auto pt-6 border-t border-white/10 shrink-0">
+            {socials.instagram && (
+              <a href={`https://instagram.com/${socials.instagram.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors font-mono text-xs flex items-center gap-2">
+                📸 {socials.instagram}
+              </a>
+            )}
+            {socials.facebook && (
+              <a href={`https://facebook.com/search/top?q=${encodeURIComponent(socials.facebook)}`} target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors font-mono text-xs flex items-center gap-2">
+                📘 {socials.facebook}
+              </a>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 
 export default function MeetTheHost() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const card1Ref = useRef<HTMLDivElement>(null);
-  const card1InnerRef = useRef<HTMLDivElement>(null);
-  const card2Ref = useRef<HTMLDivElement>(null);
-  const card2InnerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    let ctx = gsap.context(() => {
-      let mm = gsap.matchMedia();
-
-      mm.add("(min-width: 768px)", () => {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top top",
-            end: "+=400%", // 4x window height for scroll duration
-            scrub: 1,
-            pin: true,
-          }
-        });
-
-        gsap.set([card1Ref.current, card2Ref.current], { 
-          xPercent: -50, 
-          yPercent: -50,
-          y: "50vh", 
-          opacity: 0 
-        });
-
-        tl.to(card1Ref.current, { y: 0, opacity: 1, duration: 1 })
-          .to(card1InnerRef.current, { rotateY: 180, duration: 1 })
-          .to(card2Ref.current, { y: 0, opacity: 1, duration: 1 })
-          .addLabel("spread")
-          .to(card1Ref.current, { xPercent: 5, duration: 1 }, "spread")
-          .to(card2InnerRef.current, { rotateY: 180, duration: 1 }, "spread")
-          .to(card2Ref.current, { xPercent: -105, duration: 1 }, "spread");
-      });
-
-      mm.add("(max-width: 767px)", () => {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top top",
-            end: "+=400%",
-            scrub: 1,
-            pin: true,
-          }
-        });
-
-        gsap.set([card1Ref.current, card2Ref.current], { 
-          xPercent: -50, 
-          yPercent: -50,
-          y: "50vh", 
-          opacity: 0 
-        });
-
-        tl.to(card1Ref.current, { y: 0, opacity: 1, duration: 1 })
-          .to(card1InnerRef.current, { rotateY: 180, duration: 1 })
-          .to(card2Ref.current, { y: 0, opacity: 1, duration: 1 })
-          .addLabel("spread")
-          .to(card1Ref.current, { yPercent: -105, scale: 0.9, duration: 1 }, "spread")
-          .to(card2InnerRef.current, { rotateY: 180, duration: 1 }, "spread")
-          .to(card2Ref.current, { yPercent: 5, scale: 0.9, duration: 1 }, "spread");
-      });
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="bg-[#0a0a0a] text-white font-sans selection:bg-white selection:text-black"
+      className="min-h-screen bg-[#0a0a0a] text-white font-sans selection:bg-white selection:text-black pb-24"
     >
-      {/* Pinned Animation Section */}
-      <div ref={containerRef} className="h-screen w-full relative overflow-hidden flex flex-col">
-        {/* Header section */}
-        <header className="pt-16 px-6 sm:px-8 md:px-12 lg:px-16 max-w-7xl mx-auto w-full relative z-30">
-          <Link to="/" className="btn-primary mb-12 text-xs font-mono tracking-widest uppercase self-start inline-flex">
-            <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
-            Back to Home
-          </Link>
-          
-          <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-wide uppercase mb-4">
-            Meet The Hosts
-          </h1>
-          <p className="text-neutral-400 font-mono text-sm tracking-widest uppercase">
-            Scroll down to reveal
-          </p>
-        </header>
+      <div className="pt-24 px-6 sm:px-8 md:px-12 lg:px-16 max-w-7xl mx-auto w-full">
+        <Link to="/" className="btn-primary mb-12 text-xs font-mono tracking-widest uppercase inline-flex">
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back to Home
+        </Link>
+        
+        <h1 className="font-display text-4xl sm:text-5xl md:text-6xl tracking-wide uppercase mb-16">
+          Meet The Host
+        </h1>
 
-        {/* Cards Area */}
-        <div className="flex-grow relative w-full" role="list">
+        <div className="max-w-2xl">
           <HostCard 
-            name="Host Name 1"
-            role="Co-Founder & DJ"
-            bio="Bio placeholder for the first host. Add details about their background, musical influences, and role in the podcast here. They bring the energy and set the tone for every episode."
-            cardRef={card1Ref}
-            innerRef={card1InnerRef}
-            zIndex={10}
-            imageUrl="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-          />
-          <HostCard 
-            name="Host Name 2"
-            role="Co-Founder & Producer"
-            bio="Bio placeholder for the second host. Add details about their background, musical influences, and role in the podcast here. They are the mastermind behind the soundscapes and audio engineering."
-            cardRef={card2Ref}
-            innerRef={card2InnerRef}
-            zIndex={20}
+            name="Rob.G"
+            role="Host & Creator"
+            bio="Rob.G is the voice and vision behind Listening Pleasure. Born and raised in Newport News, VA, Rob.G brings that authentic 757 energy to every episode. By day, he's a truck driver rolling down the highway. By night, he's a dedicated youth football coach with over 15 years of experience mentoring young men on and off the field. His love for the youth runs deep, and coaching has always been more than just football—it's about shaping character. Rob.G started Listening Pleasure to give the people a voice—a real chance to speak their stories, no matter what. This isn't your traditional podcast. It's raw. It's unfiltered. But at the core, it's respectful and family. Every week, Rob.G and the crew link up to catch up, talk real life, and let the people be heard. Known for his direct style, sharp wit, and ability to ask the questions nobody else will, Rob.G keeps the show honest, unpredictable, and 100% real. When he's not behind the mic, you can find him spending time with family, coaching his youth football team, or stacking miles in his truck."
+            imageUrl="/robg-photo.JPG"
+            socials={{
+              instagram: "@CoachRob757",
+              facebook: "Robert Gurley"
+            }}
           />
         </div>
       </div>
-      
-      {/* Add some padding at the bottom so it doesn't just end abruptly after unpinning */}
-      <footer className="h-[50vh] flex flex-col items-center justify-center bg-[#0a0a0a] relative z-10">
-        <div className="w-[1px] h-24 bg-gradient-to-b from-white/20 to-transparent mb-8" aria-hidden="true"></div>
-        <p className="text-neutral-500 font-mono tracking-widest uppercase text-sm">End of Profiles</p>
-      </footer>
     </motion.div>
   );
 }

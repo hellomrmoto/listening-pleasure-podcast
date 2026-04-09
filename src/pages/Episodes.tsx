@@ -157,84 +157,84 @@ export default function Episodes() {
       </div>
 
       {/* Header */}
-      <header role="banner" className="relative z-50 p-6 sm:p-8 md:p-12 lg:p-16 pb-0">
+      <div className="relative z-50 p-6 sm:p-8 md:p-12 lg:p-16 pb-0">
         <div className="max-w-[1600px] mx-auto flex items-center justify-between relative z-10">
-          <nav role="navigation" aria-label="Breadcrumb">
+          <div>
             <Link to="/" className="btn-primary mb-4 text-xs font-mono tracking-widest uppercase self-start inline-flex">
-              <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
+              <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Home
             </Link>
-            <h1 id="episodes-title" className="font-display text-3xl sm:text-4xl md:text-5xl tracking-wide uppercase drop-shadow-lg text-white">
+            <h1 className="font-display text-3xl sm:text-4xl md:text-5xl tracking-wide uppercase drop-shadow-lg text-white">
               All Episodes
             </h1>
-          </nav>
-          <div className="hidden md:block text-right bg-white/5 backdrop-blur-md px-4 py-2 rounded-lg border border-white/10" aria-hidden="true">
+          </div>
+          <div className="hidden md:block text-right bg-white/5 backdrop-blur-md px-4 py-2 rounded-lg border border-white/10">
             <p className="font-mono text-xs tracking-[0.2em] text-neutral-400 uppercase">Listening Pleasure</p>
             <p className="font-mono text-xs tracking-[0.2em] text-neutral-400 uppercase mt-1">Podcast Archive</p>
           </div>
         </div>
-      </header>
+      </div>
 
       {/* Grid Container */}
       <div className="relative z-10 p-6 sm:p-8 md:p-12 lg:p-16 max-w-[1600px] mx-auto">
-        <section aria-labelledby="episodes-title" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-8" role="list">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-8">
           {episodes.map((ep) => (
-            <article key={ep.id} role="listitem" aria-labelledby={`episode-title-${ep.id}`} className="group [perspective:1000px] h-[350px] sm:h-[400px] w-full cursor-pointer" tabIndex={0}>
-              <div className="relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] group-focus:[transform:rotateY(180deg)] group-focus-within:[transform:rotateY(180deg)]">
+            <div key={ep.id} className="group [perspective:1000px] h-[350px] sm:h-[400px] w-full cursor-pointer">
+              <div className="relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
                 
                 {/* Front of Card */}
                 <div 
                   className="absolute inset-0 [backface-visibility:hidden] rounded-xl border border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.5)] bg-neutral-900 overflow-hidden"
-                  aria-hidden="true"
                 >
                   <div 
                     className="absolute inset-0 bg-cover"
                     style={{ 
                       backgroundImage: `url('${ep.image}')`,
-                      backgroundPosition: ep.bgPosition,
+                      backgroundPosition: 'center center',
                     }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                  <div className="absolute bottom-0 left-0 w-full p-6">
-                    <h2 id={`episode-title-${ep.id}`} className="font-mono font-bold text-sm sm:text-base tracking-widest text-white uppercase drop-shadow-md">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/80" />
+                  <div className="absolute inset-0 flex items-center justify-center p-6">
+                    <h3 className="font-mono font-bold text-lg sm:text-xl tracking-widest text-white uppercase drop-shadow-md text-center">
                       {ep.title.split(':')[0]}
-                    </h2>
+                    </h3>
                   </div>
                 </div>
 
                 {/* Back of Card */}
-                <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-xl border border-white/20 shadow-[0_10px_30px_rgba(0,0,0,0.8)] bg-neutral-900 overflow-hidden flex flex-col p-6">
+                <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-xl border border-white/20 shadow-[0_10px_30px_rgba(0,0,0,0.8)] bg-neutral-900 overflow-hidden flex flex-col p-6 text-center">
                   <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 to-black pointer-events-none" />
                   
-                  <div className="relative z-10 flex flex-col h-full">
-                    <h2 className="font-display text-xl sm:text-2xl uppercase mb-2 text-white leading-tight">
-                      {ep.title}
-                    </h2>
-                    <p className="font-mono text-xs text-neutral-400 mb-4 tracking-widest uppercase">
-                      <span className="sr-only">Duration: </span>{ep.duration}
-                    </p>
-                    <p className="text-sm text-neutral-300 flex-grow leading-relaxed">
-                      {ep.description}
-                    </p>
+                  <div className="relative z-10 flex flex-col h-full items-center justify-center">
+                    <div className="flex-grow flex flex-col items-center justify-center">
+                      <h3 className="font-display text-xl sm:text-2xl uppercase mb-2 text-white leading-tight">
+                        {ep.title}
+                      </h3>
+                      <p className="font-mono text-xs text-neutral-400 mb-4 tracking-widest uppercase">
+                        {ep.duration}
+                      </p>
+                      <p className="text-sm text-neutral-300 leading-relaxed">
+                        {ep.description}
+                      </p>
+                    </div>
                     
                     <a
                       href={ep.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="btn-primary mt-4 w-full font-mono text-xs font-bold tracking-[0.2em] uppercase"
-                      aria-label={`Watch ${ep.title} on YouTube`}
+                      className="btn-primary mt-4 w-full font-mono text-xs font-bold tracking-[0.2em] uppercase justify-center"
                     >
                       Watch Now
-                      <PlayCircle className="w-4 h-4 ml-2" aria-hidden="true" />
+                      <PlayCircle className="w-4 h-4 ml-2" />
                     </a>
                   </div>
                 </div>
 
               </div>
-            </article>
+            </div>
           ))}
-        </section>
-      </main>
+        </div>
+      </div>
     </motion.div>
   );
 }

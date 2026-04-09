@@ -18,6 +18,15 @@
           "type": "string",
           "description": "Base64 encoded audio data."
         },
+        "videoData": {
+          "type": "string",
+          "description": "Base64 encoded video data."
+        },
+        "type": {
+          "type": "string",
+          "enum": ["audio", "video"],
+          "description": "The type of message (audio or video)."
+        },
         "createdAt": {
           "type": "timestamp",
           "description": "When the voice note was submitted."
