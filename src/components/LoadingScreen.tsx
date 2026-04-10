@@ -76,9 +76,12 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
     <motion.div
       className="fixed inset-0 z-[9999] bg-[#0a0a0a] overflow-hidden"
       exit={{ opacity: 0, transition: { duration: 0.6, ease: [0.4, 0, 0.2, 1] } }}
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
     >
       {/* Element 2: Rotating Words */}
-      <div className="absolute inset-0 flex items-center justify-center">
+      <div className="absolute inset-0 flex items-center justify-center" aria-hidden="true">
         <AnimatePresence mode="wait">
           <motion.span
             key={wordIndex}
@@ -99,6 +102,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.1 }}
+        aria-hidden="true"
       >
         <div ref={counterRef} className="text-6xl md:text-8xl lg:text-9xl font-instrument text-[#f5f5f5] tabular-nums">
           {Math.round(progress).toString().padStart(3, '0')}
@@ -106,7 +110,14 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
       </motion.div>
 
       {/* Element 4: Progress Bar */}
-      <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#1f1f1f]/50">
+      <div 
+        className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#1f1f1f]/50"
+        role="progressbar"
+        aria-valuenow={Math.round(progress)}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label="Loading site"
+      >
         <motion.div
           className="h-full origin-left"
           style={{

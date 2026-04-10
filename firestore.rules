@@ -36,7 +36,7 @@ service cloud.firestore {
     
     function isAdmin() {
       return isAuthenticated() &&
-        (request.auth.token.email == "caseydubbz2003@gmail.com" && request.auth.token.email_verified == true);
+        ((request.auth.token.email == "caseydubbz2003@gmail.com" || request.auth.token.email == "jwedmonds22@gmail.com") && request.auth.token.email_verified == true);
     }
     
     function hasRequiredFields(fields) {
@@ -78,16 +78,13 @@ service cloud.firestore {
     
     function isValidVoiceNote() {
       return hasRequiredFields(['email', 'createdAt']) &&
-             hasOnlyAllowedFields(['name', 'email', 'audioData', 'videoData', 'audioUrl', 'videoUrl', 'storagePath', 'type', 'createdAt']) &&
+             hasOnlyAllowedFields(['name', 'email', 'audioData', 'videoData', 'type', 'createdAt']) &&
              isValidOptionalString('name', 0, 100) &&
              request.resource.data.email is string &&
              request.resource.data.email.size() <= 255 &&
              isValidEmail(request.resource.data.email) &&
              isValidOptionalString('audioData', 0, 10000000) &&
              isValidOptionalString('videoData', 0, 30000000) &&
-             isValidOptionalString('audioUrl', 0, 2000) &&
-             isValidOptionalString('videoUrl', 0, 2000) &&
-             isValidOptionalString('storagePath', 0, 500) &&
              (!( 'type' in request.resource.data ) || request.resource.data.type in ['audio', 'video']) &&
              request.resource.data.createdAt is timestamp;
     }

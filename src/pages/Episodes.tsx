@@ -143,7 +143,8 @@ const episodes = [
 
 export default function Episodes() {
   return (
-    <motion.div 
+    <motion.main 
+      id="main-content"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -161,7 +162,7 @@ export default function Episodes() {
         <div className="max-w-[1600px] mx-auto flex items-center justify-between relative z-10">
           <div>
             <Link to="/" className="btn-primary mb-4 text-xs font-mono tracking-widest uppercase self-start inline-flex">
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
               Back to Home
             </Link>
             <h1 className="font-display text-3xl sm:text-4xl md:text-5xl tracking-wide uppercase drop-shadow-lg text-white">
@@ -180,11 +181,12 @@ export default function Episodes() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-8">
           {episodes.map((ep) => (
             <div key={ep.id} className="group [perspective:1000px] h-[350px] sm:h-[400px] w-full cursor-pointer">
-              <div className="relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+              <div className="relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] group-focus-within:[transform:rotateY(180deg)]">
                 
                 {/* Front of Card */}
                 <div 
                   className="absolute inset-0 [backface-visibility:hidden] rounded-xl border border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.5)] bg-neutral-900 overflow-hidden"
+                  aria-hidden="true"
                 >
                   <div 
                     className="absolute inset-0 bg-cover"
@@ -222,10 +224,11 @@ export default function Episodes() {
                       href={ep.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="btn-primary mt-4 w-full font-mono text-xs font-bold tracking-[0.2em] uppercase justify-center"
+                      aria-label={`Watch ${ep.title} on YouTube`}
+                      className="btn-primary mt-4 w-full font-mono text-xs font-bold tracking-[0.2em] uppercase justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                     >
                       Watch Now
-                      <PlayCircle className="w-4 h-4 ml-2" />
+                      <PlayCircle className="w-4 h-4 ml-2" aria-hidden="true" />
                     </a>
                   </div>
                 </div>
@@ -235,6 +238,6 @@ export default function Episodes() {
           ))}
         </div>
       </div>
-    </motion.div>
+    </motion.main>
   );
 }

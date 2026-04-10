@@ -1,18 +1,77 @@
 import express from "express";
-import { createServer as createViteServer } from "vite";
 import path from "path";
-import { fileURLToPath } from "url";
 import { createServer } from "http";
 import { Server } from "socket.io";
+import nodemailer from "nodemailer";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const app = express();
 
 async function startServer() {
-  const app = express();
-  const PORT = 3000;
-  const httpServer = createServer(app);
-  const io = new Server(httpServer);
+const PORT = Number(process.env.PORT) || 3000;
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
+
+// Increase payload limit for Base64 audio/video
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
+  // Email configuration
+  const transporter = nodemailer.createTransport({
+    service: process.env.EMAIL_SERVICE || 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+
+  // API Routes
+  app.post("/api/send-email", async (req, res) => {
+    const { name, email, type, data, topic } = req.body;
+
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      console.warn("Email credentials not configured. Skipping email send.");
+      return res.status(200).json({ status: "skipped", message: "Email credentials not configured" });
+    }
+
+    try {
+      let subject = "";
+      let text = "";
+      let attachments = [];
+
+      if (type === 'pitch') {
+        subject = `New Podcast Pitch from ${name || 'Anonymous'}`;
+        text = `You received a new topic pitch.\n\nFrom: ${name || 'Anonymous'}\nEmail: ${email}\n\nTopic/Pitch:\n${topic}`;
+      } else {
+        subject = `New ${type === 'video' ? 'Video' : 'Voice'} Message from ${name || 'Anonymous'}`;
+        text = `You received a new ${type} message.\n\nFrom: ${name || 'Anonymous'}\nEmail: ${email}\n\nA copy of the recording is attached.`;
+        if (data) {
+          attachments.push({
+            filename: `message-${Date.now()}.${type === 'video' ? 'webm' : 'webm'}`,
+            path: data,
+          });
+        }
+      }
+
+      const mailOptions = {
+        from: `"Listening Pleasure Podcast" <${process.env.EMAIL_USER}>`,
+        to: "listeningpleasure-podcast@gmail.com",
+        subject,
+        text,
+        attachments,
+      };
+
+      await transporter.sendMail(mailOptions);
+      res.json({ status: "ok" });
+    } catch (error) {
+      console.error("Error sending email:", error);
+      res.status(500).json({ status: "error", message: "Failed to send email" });
+    }
+  });
 
   // --- Spades Game Logic ---
   const rooms: Record<string, any> = {};
@@ -352,6 +411,8 @@ async function startServer() {
   }
 
   if (process.env.NODE_ENV !== "production") {
+    const viteModule = "vite";
+    const { createServer: createViteServer } = await import(viteModule);
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
@@ -365,9 +426,14 @@ async function startServer() {
     });
   }
 
-  httpServer.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-  });
+  // Listen on port 3000 unless running on Vercel (which handles routing itself)
+  if (!process.env.VERCEL) {
+    httpServer.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
+  }
 }
 
 startServer();
+
+export default app;

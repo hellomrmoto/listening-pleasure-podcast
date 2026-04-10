@@ -15,9 +15,9 @@ export default function About() {
       <div className="max-w-7xl mx-auto">
         <Link 
           to="/" 
-          className="inline-flex items-center text-neutral-400 hover:text-white transition-colors mb-12 font-mono text-sm tracking-widest uppercase"
+          className="inline-flex items-center text-neutral-400 hover:text-white transition-colors mb-12 font-mono text-sm tracking-widest uppercase focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none rounded"
         >
-          <ArrowLeft className="w-4 h-4 mr-2" />
+          <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
           Back to Home
         </Link>
 
@@ -63,7 +63,7 @@ export default function About() {
               </p>
               <p className="text-neutral-300 text-lg">
                 📩 <strong className="text-white font-medium">Business/Collabs:</strong><br/>
-                <a href="mailto:ListeningPleasurePodcast@gmail.com" className="text-white hover:underline mt-1 inline-block">ListeningPleasurePodcast@gmail.com</a>
+                <a href="mailto:ListeningPleasurePodcast@gmail.com" className="text-white hover:underline mt-1 inline-block focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none rounded">ListeningPleasurePodcast@gmail.com</a>
               </p>
             </div>
           </div>

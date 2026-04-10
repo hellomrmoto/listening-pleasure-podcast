@@ -47,13 +47,13 @@ function HostCard({ name, role, bio, imageUrl, socials }: HostCardProps) {
         {socials && (
           <div className="flex flex-wrap gap-4 mt-auto pt-6 border-t border-white/10 shrink-0">
             {socials.instagram && (
-              <a href={`https://instagram.com/${socials.instagram.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors font-mono text-xs flex items-center gap-2">
-                📸 {socials.instagram}
+              <a href={`https://instagram.com/${socials.instagram.replace('@', '')}`} target="_blank" rel="noopener noreferrer" aria-label={`${name}'s Instagram`} className="text-neutral-400 hover:text-white transition-colors font-mono text-xs flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none rounded">
+                <span aria-hidden="true">📸</span> {socials.instagram}
               </a>
             )}
             {socials.facebook && (
-              <a href={`https://facebook.com/search/top?q=${encodeURIComponent(socials.facebook)}`} target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors font-mono text-xs flex items-center gap-2">
-                📘 {socials.facebook}
+              <a href={`https://facebook.com/search/top?q=${encodeURIComponent(socials.facebook)}`} target="_blank" rel="noopener noreferrer" aria-label={`${name}'s Facebook`} className="text-neutral-400 hover:text-white transition-colors font-mono text-xs flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none rounded">
+                <span aria-hidden="true">📘</span> {socials.facebook}
               </a>
             )}
           </div>
@@ -69,29 +69,34 @@ export default function MeetTheHost() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen bg-[#0a0a0a] text-white font-sans selection:bg-white selection:text-black pb-24"
+      className="min-h-screen text-white font-sans selection:bg-white selection:text-black pb-24 relative overflow-hidden"
+      style={{ 
+        background: 'radial-gradient(ellipse at center, #D4AF37 0%, #002366 100%)'
+      }}
     >
       <div className="pt-24 px-6 sm:px-8 md:px-12 lg:px-16 max-w-7xl mx-auto w-full">
         <Link to="/" className="btn-primary mb-12 text-xs font-mono tracking-widest uppercase inline-flex">
-          <ArrowLeft className="w-4 h-4 mr-2" />
+          <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
           Back to Home
         </Link>
         
-        <h1 className="font-display text-4xl sm:text-5xl md:text-6xl tracking-wide uppercase mb-16">
-          Meet The Host
-        </h1>
+        <div className="flex flex-col items-center">
+          <h1 className="font-display text-4xl sm:text-5xl md:text-6xl tracking-wide uppercase mb-16 text-center">
+            Meet The Host
+          </h1>
 
-        <div className="max-w-2xl">
-          <HostCard 
-            name="Rob.G"
-            role="Host & Creator"
-            bio="Rob.G is the voice and vision behind Listening Pleasure. Born and raised in Newport News, VA, Rob.G brings that authentic 757 energy to every episode. By day, he's a truck driver rolling down the highway. By night, he's a dedicated youth football coach with over 15 years of experience mentoring young men on and off the field. His love for the youth runs deep, and coaching has always been more than just football—it's about shaping character. Rob.G started Listening Pleasure to give the people a voice—a real chance to speak their stories, no matter what. This isn't your traditional podcast. It's raw. It's unfiltered. But at the core, it's respectful and family. Every week, Rob.G and the crew link up to catch up, talk real life, and let the people be heard. Known for his direct style, sharp wit, and ability to ask the questions nobody else will, Rob.G keeps the show honest, unpredictable, and 100% real. When he's not behind the mic, you can find him spending time with family, coaching his youth football team, or stacking miles in his truck."
-            imageUrl="/robg-photo.JPG"
-            socials={{
-              instagram: "@CoachRob757",
-              facebook: "Robert Gurley"
-            }}
-          />
+          <div className="max-w-2xl w-full">
+            <HostCard 
+              name="Rob.G"
+              role="Host & Creator"
+              bio="Rob.G is the voice and vision behind Listening Pleasure. Born and raised in Newport News, VA, Rob.G brings that authentic 757 energy to every episode. By day, he's a truck driver rolling down the highway. By night, he's a dedicated youth football coach with over 15 years of experience mentoring young men on and off the field. His love for the youth runs deep, and coaching has always been more than just football—it's about shaping character. Rob.G started Listening Pleasure to give the people a voice—a real chance to speak their stories, no matter what. This isn't your traditional podcast. It's raw. It's unfiltered. But at the core, it's respectful and family. Every week, Rob.G and the crew link up to catch up, talk real life, and let the people be heard. Known for his direct style, sharp wit, and ability to ask the questions nobody else will, Rob.G keeps the show honest, unpredictable, and 100% real. When he's not behind the mic, you can find him spending time with family, coaching his youth football team, or stacking miles in his truck."
+              imageUrl="/robg-photo.JPG"
+              socials={{
+                instagram: "@CoachRob757",
+                facebook: "Robert Gurley"
+              }}
+            />
+          </div>
         </div>
       </div>
     </motion.div>

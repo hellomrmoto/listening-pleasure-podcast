@@ -1,9 +1,10 @@
 {
-  "projectId": "listening-pleasure",
-  "appId": "1:623099505679:web:1d385c0b691f1c7963077a",
-  "apiKey": "AIzaSyB4AX_TaRFmcii-F8dZpEliFeU4YfIDieE",
-  "authDomain": "listening-pleasure.firebaseapp.com",
-  "storageBucket": "listening-pleasure.firebasestorage.app",
-  "messagingSenderId": "623099505679",
-  "measurementId": "G-2JYQ46PDXL"
+  "projectId": "gen-lang-client-0419714123",
+  "appId": "1:14650655195:web:61819404cfad4c16f927fe",
+  "apiKey": "AIzaSyCVvelBAAerO8UcXUxHetF67xSuy0r6Frg",
+  "authDomain": "gen-lang-client-0419714123.firebaseapp.com",
+  "firestoreDatabaseId": "ai-studio-5316fc34-6a61-443a-a8a4-2ec15122b795",
+  "storageBucket": "gen-lang-client-0419714123.firebasestorage.app",
+  "messagingSenderId": "14650655195",
+  "measurementId": ""
 }

@@ -25,22 +25,17 @@ import {
   onSnapshot, 
   deleteDoc, 
   doc,
-  getDoc,
   Timestamp 
 } from 'firebase/firestore';
-import { ref, deleteObject } from 'firebase/storage';
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, User as FirebaseUser } from 'firebase/auth';
-import { db, auth, storage } from '../firebase';
+import { db, auth } from '../firebase';
 
 interface VoiceNote {
   id: string;
   name?: string;
   email: string;
-  audioUrl?: string;
-  videoUrl?: string;
   audioData?: string;
   videoData?: string;
-  storagePath?: string;
   type?: 'audio' | 'video';
   createdAt: Timestamp;
 }
@@ -62,8 +57,8 @@ export default function Inbox() {
   const [playingId, setPlayingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   
-  const adminEmail = "caseydubbz2003@gmail.com";
-  const isAdmin = user?.email === adminEmail;
+  const adminEmails = ["caseydubbz2003@gmail.com", "jwedmonds22@gmail.com"];
+  const isAdmin = user?.email && adminEmails.includes(user.email);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (u) => {
@@ -114,21 +109,6 @@ export default function Inbox() {
   const handleDelete = async (collectionName: string, id: string) => {
     if (!window.confirm("Are you sure you want to delete this?")) return;
     try {
-      // If deleting a voice note, also delete the file from Storage
-      if (collectionName === 'voice_notes') {
-        const docRef = doc(db, collectionName, id);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          if (data.storagePath) {
-            try {
-              await deleteObject(ref(storage, data.storagePath));
-            } catch (storageErr) {
-              console.warn("Could not delete storage file:", storageErr);
-            }
-          }
-        }
-      }
       await deleteDoc(doc(db, collectionName, id));
     } catch (err) {
       console.error("Delete error:", err);
@@ -170,8 +150,8 @@ export default function Inbox() {
         >
           Login with Google
         </button>
-        <Link to="/" className="mt-8 text-neutral-500 hover:text-white transition-colors flex items-center gap-2 font-mono text-xs uppercase tracking-widest">
-          <ArrowLeft className="w-4 h-4" />
+        <Link to="/" className="mt-8 text-neutral-500 hover:text-white transition-colors flex items-center gap-2 font-mono text-xs uppercase tracking-widest focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none rounded">
+          <ArrowLeft className="w-4 h-4" aria-hidden="true" />
           Back to Site
         </Link>
       </div>
@@ -189,11 +169,11 @@ export default function Inbox() {
         <div className="flex gap-4">
           <button 
             onClick={handleLogout}
-            className="border border-white/20 text-white font-display text-xs uppercase tracking-widest py-3 px-8 rounded-full hover:bg-white hover:text-black transition-all"
+            className="border border-white/20 text-white font-display text-xs uppercase tracking-widest py-3 px-8 rounded-full hover:bg-white hover:text-black transition-all focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none"
           >
             Logout
           </button>
-          <Link to="/" className="bg-white text-black font-display text-xs uppercase tracking-widest py-3 px-8 rounded-full hover:bg-neutral-200 transition-all">
+          <Link to="/" className="bg-white text-black font-display text-xs uppercase tracking-widest py-3 px-8 rounded-full hover:bg-neutral-200 transition-all focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none">
             Back to Site
           </Link>
         </div>
@@ -207,8 +187,8 @@ export default function Inbox() {
       <header className="border-b border-white/10 bg-black/50 backdrop-blur-xl sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link to="/" className="p-2 hover:bg-white/10 rounded-full transition-colors">
-              <ArrowLeft className="w-5 h-5" />
+            <Link to="/" className="p-2 hover:bg-white/10 rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none" aria-label="Back to Home">
+              <ArrowLeft className="w-5 h-5" aria-hidden="true" />
             </Link>
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-600/20">
@@ -225,10 +205,11 @@ export default function Inbox() {
             </div>
             <button 
               onClick={handleLogout}
-              className="p-2 hover:bg-red-500/10 hover:text-red-400 rounded-full transition-all"
+              className="p-2 hover:bg-red-500/10 hover:text-red-400 rounded-full transition-all focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:outline-none"
               title="Logout"
+              aria-label="Logout"
             >
-              <LogOut className="w-5 h-5" />
+              <LogOut className="w-5 h-5" aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -287,32 +268,33 @@ export default function Inbox() {
                       </div>
                       <button 
                         onClick={() => handleDelete('voice_notes', note.id)}
-                        className="p-2 text-neutral-600 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all"
+                        aria-label="Delete voice note"
+                        className="p-2 text-neutral-600 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:outline-none"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="w-4 h-4" aria-hidden="true" />
                       </button>
                     </div>
 
                     <div className="space-y-4 mb-8">
                       <div className="flex items-center gap-3">
-                        <User className="w-4 h-4 text-neutral-500" />
+                        <User className="w-4 h-4 text-neutral-500" aria-hidden="true" />
                         <span className="text-sm font-medium">{note.name || 'Anonymous'}</span>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Mail className="w-4 h-4 text-neutral-500" />
+                        <Mail className="w-4 h-4 text-neutral-500" aria-hidden="true" />
                         <span className="text-xs text-neutral-400 truncate">{note.email}</span>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Clock className="w-4 h-4 text-neutral-500" />
+                        <Clock className="w-4 h-4 text-neutral-500" aria-hidden="true" />
                         <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest">{formatTime(note.createdAt)}</span>
                       </div>
                     </div>
 
                     <div className="bg-black/40 rounded-2xl p-4 border border-white/5">
-                      {note.type === 'video' && (note.videoUrl || note.videoData) ? (
+                      {note.type === 'video' && note.videoData ? (
                         <div className="aspect-video bg-black rounded-lg overflow-hidden mb-4">
                           <video 
-                            src={note.videoUrl || note.videoData} 
+                            src={note.videoData} 
                             controls 
                             className="w-full h-full object-cover"
                           />
@@ -321,18 +303,19 @@ export default function Inbox() {
                         <div className="flex items-center gap-4">
                           <button 
                             onClick={() => setPlayingId(playingId === note.id ? null : note.id)}
-                            className="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 transition-transform"
+                            aria-label={playingId === note.id ? "Pause voice note" : "Play voice note"}
+                            className="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 transition-transform focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none"
                           >
-                            {playingId === note.id ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
+                            {playingId === note.id ? <Pause className="w-4 h-4 fill-current" aria-hidden="true" /> : <Play className="w-4 h-4 fill-current ml-0.5" aria-hidden="true" />}
                           </button>
-                          <div className="flex-1 h-1 bg-white/10 rounded-full overflow-hidden">
+                          <div className="flex-1 h-1 bg-white/10 rounded-full overflow-hidden" aria-hidden="true">
                             <div className={`h-full bg-purple-500 ${playingId === note.id ? 'w-full transition-all duration-[60s] ease-linear' : 'w-0'}`} />
                           </div>
                         </div>
                       )}
-                      {playingId === note.id && (note.audioUrl || note.audioData) && (
+                      {playingId === note.id && note.audioData && (
                         <audio 
-                          src={note.audioUrl || note.audioData} 
+                          src={note.audioData} 
                           autoPlay 
                           onEnded={() => setPlayingId(null)}
                           className="hidden"
@@ -376,9 +359,10 @@ export default function Inbox() {
 
                     <button 
                       onClick={() => handleDelete('pitches', pitch.id)}
-                      className="p-2 text-neutral-600 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all self-end sm:self-start"
+                      aria-label="Delete pitch"
+                      className="p-2 text-neutral-600 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all self-end sm:self-start focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:outline-none"
                     >
-                      <Trash2 className="w-5 h-5" />
+                      <Trash2 className="w-5 h-5" aria-hidden="true" />
                     </button>
                   </div>
                 ))

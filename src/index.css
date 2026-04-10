@@ -15,6 +15,24 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Global Focus Styles for Accessibility */
+*:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Respect Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 @layer components {
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full font-medium text-white transition-colors duration-200;
@@ -30,6 +48,11 @@ body {
     background-color: #d1d5db; /* Disabled */
     color: #f3f4f6;
     cursor: not-allowed;
+  }
+  
+  /* Skip Link */
+  .skip-link {
+    @apply absolute top-0 left-0 -translate-y-full bg-blue-600 text-white px-4 py-2 z-[9999] transition-transform focus:translate-y-0;
   }
 }
 

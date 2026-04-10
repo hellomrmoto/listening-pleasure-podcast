@@ -42,6 +42,24 @@ export default function Pitch() {
 
       await addDoc(collection(db, 'pitches'), pitchData);
       
+      // Send email copy via backend API
+      try {
+        await fetch('/api/send-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            type: 'pitch',
+            topic: formData.topic
+          }),
+        });
+      } catch (emailError) {
+        console.error("Error calling send-email API:", emailError);
+      }
+      
       setIsSuccess(true);
       setFormData({ name: '', email: '', topic: '' });
     } catch (error) {
@@ -102,7 +120,7 @@ export default function Pitch() {
         {/* Left Column: Copy & Socials */}
         <div className="w-full md:w-1/2 flex flex-col">
           <Link to="/" className="btn-primary mb-12 text-xs font-mono tracking-widest uppercase self-start inline-flex">
-            <ArrowLeft className="w-4 h-4 mr-2" />
+            <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
             Back to Home
           </Link>
           
@@ -118,17 +136,17 @@ export default function Pitch() {
           <div className="mt-auto">
             <p className="font-mono text-xs tracking-[0.2em] text-neutral-500 uppercase mb-4">Share to get upvotes</p>
             <div className="flex gap-4">
-              <button onClick={handleNativeShare} className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all duration-300 group">
-                <Share2 className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              <button onClick={handleNativeShare} aria-label="Share via device" className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all duration-300 group focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none">
+                <Share2 className="w-5 h-5 group-hover:scale-110 transition-transform" aria-hidden="true" />
               </button>
-              <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareTitle)}&url=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-[#1DA1F2] hover:border-[#1DA1F2] transition-all duration-300 group">
-                <Twitter className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareTitle)}&url=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener noreferrer" aria-label="Share on Twitter" className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-[#1DA1F2] hover:border-[#1DA1F2] transition-all duration-300 group focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none">
+                <Twitter className="w-5 h-5 group-hover:scale-110 transition-transform" aria-hidden="true" />
               </a>
-              <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-[#4267B2] hover:border-[#4267B2] transition-all duration-300 group">
-                <Facebook className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook" className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-[#4267B2] hover:border-[#4267B2] transition-all duration-300 group focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none">
+                <Facebook className="w-5 h-5 group-hover:scale-110 transition-transform" aria-hidden="true" />
               </a>
-              <a href={`mailto:?subject=${encodeURIComponent("Pitch The Next Episode")}&body=${encodeURIComponent(shareTitle + " " + shareUrl)}`} className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all duration-300 group">
-                <Mail className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              <a href={`mailto:?subject=${encodeURIComponent("Pitch The Next Episode")}&body=${encodeURIComponent(shareTitle + " " + shareUrl)}`} aria-label="Share via Email" className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all duration-300 group focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none">
+                <Mail className="w-5 h-5 group-hover:scale-110 transition-transform" aria-hidden="true" />
               </a>
             </div>
           </div>
@@ -194,14 +212,14 @@ export default function Pitch() {
                   <button 
                     type="submit" 
                     disabled={isSubmitting}
-                    className="mt-4 w-full bg-white text-black font-display uppercase tracking-widest py-4 rounded-xl hover:bg-neutral-200 transition-colors flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed group"
+                    className="mt-4 w-full bg-white text-black font-display uppercase tracking-widest py-4 rounded-xl hover:bg-neutral-200 transition-colors flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed group focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
                   >
                     {isSubmitting ? (
-                      <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" />
+                      <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" aria-hidden="true" />
                     ) : (
                       <>
                         Submit Pitch
-                        <Send className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                        <Send className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" aria-hidden="true" />
                       </>
                     )}
                   </button>
@@ -214,15 +232,15 @@ export default function Pitch() {
                   className="flex flex-col items-center justify-center text-center py-12 relative z-10"
                 >
                   <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mb-6 text-green-400">
-                    <CheckCircle2 className="w-10 h-10" />
+                    <CheckCircle2 className="w-10 h-10" aria-hidden="true" />
                   </div>
-                  <h3 className="font-display text-3xl uppercase mb-4">Pitch Received.</h3>
+                  <h3 className="font-display text-3xl uppercase mb-4" aria-live="polite">Pitch Received.</h3>
                   <p className="text-neutral-400 mb-8">
                     If your topic gets picked, we'll hit you up at <span className="text-white">{formData.email}</span>. Keep an eye on your inbox.
                   </p>
                   <button 
                     onClick={() => setIsSuccess(false)}
-                    className="font-mono text-xs tracking-widest uppercase border border-white/20 py-3 px-6 rounded-full hover:bg-white hover:text-black transition-colors"
+                    className="font-mono text-xs tracking-widest uppercase border border-white/20 py-3 px-6 rounded-full hover:bg-white hover:text-black transition-colors focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none"
                   >
                     Pitch Another
                   </button>

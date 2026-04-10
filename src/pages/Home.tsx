@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { PlayCircle, Instagram, Facebook } from 'lucide-react';
@@ -9,12 +9,13 @@ import VoicemailWidget from '../components/VoicemailWidget';
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home({ isLoading = false }: { isLoading?: boolean }) {
+  const [adminClickCount, setAdminClickCount] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const detailsRef = useRef<HTMLDivElement>(null);
   const widgetContainerRef = useRef<HTMLDivElement>(null);
   const widgetInnerRef = useRef<HTMLDivElement>(null);
-  const navContainerRef = useRef<HTMLDivElement>(null)
+  const navContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (videoRef.current) {
@@ -140,6 +141,7 @@ export default function Home({ isLoading = false }: { isLoading?: boolean }) {
         loop 
         muted 
         playsInline 
+        aria-hidden="true"
         className="w-full aspect-video object-cover md:fixed md:inset-0 md:h-full opacity-[0.735] md:opacity-40 pointer-events-none z-0 shrink-0 scale-125 origin-center"
         src="https://res.cloudinary.com/dcx2dm5ti/video/upload/v1773431127/Loading_sign_rotate_clockwise_delpmaspu__ygfzml.mp4"
       />
@@ -148,7 +150,11 @@ export default function Home({ isLoading = false }: { isLoading?: boolean }) {
       <div className="relative z-10 flex-1 p-6 sm:p-8 md:p-12 lg:p-16 flex flex-col md:grid md:grid-cols-12 md:grid-rows-[auto_1fr_auto] gap-y-10 md:gap-y-12 md:min-h-screen">
         {/* Top Row */}
         <div className="order-1 md:order-none col-span-1 md:col-span-8">
-          <h1 ref={titleRef} className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-[5.5rem] leading-[1.1] tracking-wide mb-6 md:mb-8">
+          <h1 
+            ref={titleRef} 
+            onClick={() => setAdminClickCount(prev => prev + 1)}
+            className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-[5.5rem] leading-[1.1] tracking-wide mb-6 md:mb-8 cursor-default select-none"
+          >
             <div className="overflow-hidden"><div className="hero-line">PODCAST //</div></div>
             <div className="overflow-hidden"><div className="hero-line">LISTEN</div></div>
             <div className="overflow-hidden"><div className="hero-line">PLEASURE.</div></div>
@@ -179,6 +185,12 @@ export default function Home({ isLoading = false }: { isLoading?: boolean }) {
               About
             </Link>
             <Link 
+              to="/special-events"
+              className="hover:text-purple-600 hover:bg-white hover:scale-105 transition-all duration-300 uppercase py-2 px-3 sm:px-5 rounded-full inline-block whitespace-nowrap"
+            >
+              Special Events
+            </Link>
+            <Link 
               to="/pitch"
               className="hover:text-purple-600 hover:bg-white hover:scale-105 transition-all duration-300 uppercase py-2 px-3 sm:px-5 rounded-full inline-block whitespace-nowrap text-white"
             >
@@ -206,30 +218,38 @@ export default function Home({ isLoading = false }: { isLoading?: boolean }) {
               className="btn-primary self-start font-mono text-xs tracking-[0.2em] uppercase"
             >
               Watch on YT
-              <PlayCircle className="w-4 h-4 ml-2" />
+              <PlayCircle className="w-4 h-4 ml-2" aria-hidden="true" />
             </a>
           </div>
         </div>
         
         <div className="order-3 md:order-none col-span-1 md:col-span-6 flex justify-start md:justify-end items-end mt-2 md:mt-0">
           <div className="flex flex-wrap items-center gap-4 sm:gap-6 md:gap-8 font-mono text-[10px] sm:text-xs md:text-sm tracking-[0.15em] text-neutral-400">
-            <a href="https://www.patreon.com/ListeningPleasure" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors py-1" aria-label="Patreon">
-              <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 sm:w-6 sm:h-6">
+            <a href="https://www.patreon.com/ListeningPleasure" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors py-1 focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none rounded" aria-label="Patreon">
+              <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true">
                 <path d="M15.386.524c-4.764 0-8.64 3.876-8.64 8.64 0 4.75 3.876 8.613 8.64 8.613 4.75 0 8.614-3.864 8.614-8.613C24 4.4 20.136.524 15.386.524M.003 23.537h4.22V.524H.003"/>
               </svg>
             </a>
-            <a href="https://www.tiktok.com/@listeningpleasurepodcast" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors py-1" aria-label="TikTok">
-              <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 sm:w-6 sm:h-6">
+            <a href="https://www.tiktok.com/@listeningpleasurepodcast" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors py-1 focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none rounded" aria-label="TikTok">
+              <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true">
                 <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 2.23-1.15 4.34-2.9 5.61-1.74 1.28-4.08 1.62-6.13 1.05-2.05-.56-3.74-2.02-4.52-3.96-.78-1.94-.58-4.24.53-6.02 1.1-1.78 2.98-2.93 5.06-3.15.15-.02.31-.02.46-.02v4.06c-1.04.09-2.05.65-2.65 1.49-.6.84-.75 1.96-.4 2.94.35.98 1.18 1.75 2.18 2.03 1 .28 2.11.08 2.92-.54.81-.62 1.3-1.6 1.34-2.63.05-4.5.02-9.01.03-13.51h.01z"/>
               </svg>
             </a>
-            <a href="https://www.instagram.com/listeningpleasurepodcast?igsh=YzQzYnlvenIyY2Y5" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors py-1" aria-label="Instagram">
-              <Instagram className="w-5 h-5 sm:w-6 sm:h-6" />
+            <a href="https://www.instagram.com/listeningpleasurepodcast?igsh=YzQzYnlvenIyY2Y5" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors py-1 focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none rounded" aria-label="Instagram">
+              <Instagram className="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true" />
             </a>
-            <a href="https://www.facebook.com/share/Y2bcS47qQhtPR47n/?mibextid=qi20mg" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors py-1" aria-label="Facebook">
-              <Facebook className="w-5 h-5 sm:w-6 sm:h-6" />
+            <a href="https://www.facebook.com/share/Y2bcS47qQhtPR47n/?mibextid=qi20mg" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors py-1 focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none rounded" aria-label="Facebook">
+              <Facebook className="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true" />
             </a>
-            <Link to="/inbox" className="hover:text-white transition-colors py-1 opacity-20 hover:opacity-100 ml-2">ADMIN</Link>
+            {adminClickCount >= 5 && (
+              <Link to="/inbox" className="hover:text-white transition-colors py-1 opacity-40 hover:opacity-100 ml-2 flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none rounded">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3" aria-hidden="true">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  <path d="m9 12 2 2 4-4"/>
+                </svg>
+                ADMIN
+              </Link>
+            )}
           </div>
         </div>
       </div>
