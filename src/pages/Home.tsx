@@ -145,6 +145,9 @@ export default function Home({ isLoading = false }: { isLoading?: boolean }) {
         className="fixed inset-0 w-full h-full object-contain md:object-cover opacity-[0.35] md:opacity-50 pointer-events-none z-0 bg-black"
         src="/background.mp4"
       />
+      
+      {/* Video Watermark Cover */}
+      <div className="fixed -bottom-4 -right-4 w-48 h-32 md:w-64 md:h-40 bg-gradient-to-tl from-black via-black/95 to-transparent pointer-events-none z-0 blur-sm"></div>
 
       {/* Content Container */}
       <div className="relative z-10 flex-1 p-6 pt-12 sm:p-8 md:p-12 lg:p-16 flex flex-col md:grid md:grid-cols-12 md:grid-rows-[auto_1fr_auto] gap-y-10 md:gap-y-12 md:min-h-screen">
