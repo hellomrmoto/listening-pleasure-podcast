@@ -1,0 +1,112 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: pitches
+    // Document ID: auto-generated
+    // Fields:
+    //   - name: string (optional, max 100 chars) - The name of the submitter
+    //   - email: string (required, valid email, max 255 chars) - The email of the submitter
+    //   - topic: string (required, max 2000 chars) - The pitch topic
+    //   - createdAt: timestamp (required) - When the pitch was submitted
+    //
+    // Collection: voice_notes
+    // Document ID: auto-generated
+    // Fields:
+    //   - name: string (optional, max 100 chars) - The name of the submitter
+    //   - email: string (required, valid email, max 255 chars) - The email of the submitter
+    //   - audioData: string (optional, max 10MB) - Base64 encoded audio
+    //   - videoData: string (optional, max 30MB) - Base64 encoded video
+    //   - type: string (optional, enum: audio, video) - The type of message
+    //   - createdAt: timestamp (required) - When the voice note was submitted
+    //
+    // ===============================================================
+    
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() &&
+        ((request.auth.token.email == "caseydubbz2003@gmail.com" || request.auth.token.email == "jwedmonds22@gmail.com") && request.auth.token.email_verified == true);
+    }
+    
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+    
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+    
+    function isValidEmail(email) {
+      return email is string &&
+        email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+    
+    function isValidOptionalString(field, minLen, maxLen) {
+      return !(field in request.resource.data) ||
+             (request.resource.data[field] is string &&
+              request.resource.data[field].size() >= minLen &&
+              request.resource.data[field].size() <= maxLen);
+    }
+    
+    // ===============================================================
+    // Domain Validators
+    // ===============================================================
+    
+    function isValidPitch() {
+      return hasRequiredFields(['email', 'topic', 'createdAt']) &&
+             hasOnlyAllowedFields(['name', 'email', 'topic', 'createdAt']) &&
+             isValidOptionalString('name', 0, 100) &&
+             request.resource.data.email is string &&
+             request.resource.data.email.size() <= 255 &&
+             isValidEmail(request.resource.data.email) &&
+             request.resource.data.topic is string &&
+             request.resource.data.topic.size() > 0 &&
+             request.resource.data.topic.size() <= 2000 &&
+             request.resource.data.createdAt is timestamp;
+    }
+    
+    function isValidVoiceNote() {
+      return hasRequiredFields(['email', 'createdAt']) &&
+             hasOnlyAllowedFields(['name', 'email', 'audioData', 'videoData', 'type', 'createdAt']) &&
+             isValidOptionalString('name', 0, 100) &&
+             request.resource.data.email is string &&
+             request.resource.data.email.size() <= 255 &&
+             isValidEmail(request.resource.data.email) &&
+             isValidOptionalString('audioData', 0, 10000000) &&
+             isValidOptionalString('videoData', 0, 30000000) &&
+             (!( 'type' in request.resource.data ) || request.resource.data.type in ['audio', 'video']) &&
+             request.resource.data.createdAt is timestamp;
+    }
+    
+    // ===============================================================
+    // Rules
+    // ===============================================================
+    
+    match /pitches/{pitchId} {
+      // Anyone can submit a pitch, but it must be valid
+      allow create: if isValidPitch();
+      
+      // Only admins can read, update, or delete pitches
+      allow read, update, delete: if isAdmin();
+    }
+    
+    match /voice_notes/{noteId} {
+      // Anyone can submit a voice note, but it must be valid
+      allow create: if isValidVoiceNote();
+      
+      // Only admins can read, update, or delete voice notes
+      allow read, update, delete: if isAdmin();
+    }
+  }
+}

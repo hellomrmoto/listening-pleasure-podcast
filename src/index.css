@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&family=Michroma&family=Instrument+Serif:ital@0;1&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-display: "Michroma", sans-serif;
+  --font-instrument: "Instrument Serif", serif;
+}
+
+body {
+  background-color: #000;
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Global Focus Styles for Accessibility */
+*:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Respect Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full font-medium text-white transition-colors duration-200;
+    background-color: #1e3a8a; /* Default */
+  }
+  .btn-primary:hover:not(:disabled) {
+    background-color: #3b82f6; /* Hovered */
+  }
+  .btn-primary:active:not(:disabled) {
+    background-color: #2563eb; /* Pressed */
+  }
+  .btn-primary:disabled {
+    background-color: #d1d5db; /* Disabled */
+    color: #f3f4f6;
+    cursor: not-allowed;
+  }
+  
+  /* Skip Link */
+  .skip-link {
+    @apply absolute top-0 left-0 -translate-y-full bg-blue-600 text-white px-4 py-2 z-[9999] transition-transform focus:translate-y-0;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

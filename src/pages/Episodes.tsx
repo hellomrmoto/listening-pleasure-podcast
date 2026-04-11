@@ -1,0 +1,243 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { motion } from 'motion/react';
+import { ArrowLeft, PlayCircle } from 'lucide-react';
+
+const episodes = [
+  {
+    id: 1,
+    title: `EP-01: Episode 1`,
+    description: `Episode 1 of the Listening Pleasure Podcast`,
+    duration: '120 Mins',
+    image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
+    url: '#',
+    bgPosition: 'center center'
+  },
+  {
+    id: 2,
+    title: `EP-02: Bridging The Gap`,
+    description: `Bridging The Gap`,
+    duration: '120 Mins',
+    image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
+    url: '#',
+    bgPosition: 'center center'
+  },
+  {
+    id: 3,
+    title: `EP-03: Derrick Gurley Jr`,
+    description: `Derrick Gurley Jr Interview`,
+    duration: '120 Mins',
+    image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
+    url: '#',
+    bgPosition: 'center center'
+  },
+  {
+    id: 4,
+    title: `EP-04: 2nd year anniversary`,
+    description: `Celebrating our 2nd year anniversary`,
+    duration: '120 Mins',
+    image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
+    url: '#',
+    bgPosition: 'center center'
+  },
+  {
+    id: 5,
+    title: `EP-05: Realtor & Home buying`,
+    description: `Realtor & Home buying discussion`,
+    duration: '120 Mins',
+    image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
+    url: '#',
+    bgPosition: 'center center'
+  },
+  {
+    id: 6,
+    title: `EP-06: I'Ziah Emery Interview`,
+    description: `I'Ziah Emery Interview`,
+    duration: '120 Mins',
+    image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
+    url: '#',
+    bgPosition: 'center center'
+  },
+  {
+    id: 7,
+    title: `EP-07: Travel`,
+    description: `Travel`,
+    duration: '120 Mins',
+    image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
+    url: '#',
+    bgPosition: 'center center'
+  },
+  {
+    id: 8,
+    title: `EP-08: Youth Football Talk`,
+    description: `Youth Football Talk`,
+    duration: '120 Mins',
+    image: 'https://img.youtube.com/vi/o_EWZSkjo_E/maxresdefault.jpg',
+    url: 'https://www.youtube.com/watch?v=o_EWZSkjo_E',
+    bgPosition: 'center center'
+  },
+  {
+    id: 9,
+    title: `EP-09: Mac special`,
+    description: `Mac special`,
+    duration: '120 Mins',
+    image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
+    url: '#',
+    bgPosition: 'center center'
+  },
+  {
+    id: 10,
+    title: `EP-10: C.P.S & Goverment Iss`,
+    description: `C.P.S & Goverment Issues`,
+    duration: '120 Mins',
+    image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
+    url: '#',
+    bgPosition: 'center center'
+  },
+  {
+    id: 11,
+    title: `EP-11: Battlefields To Civilian Life`,
+    description: `Battlefields To Civilian Life`,
+    duration: '120 Mins',
+    image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
+    url: '#',
+    bgPosition: 'center center'
+  },
+  {
+    id: 12,
+    title: `EP-12: Kevin White Interview`,
+    description: `Kevin White Interview`,
+    duration: '120 Mins',
+    image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
+    url: '#',
+    bgPosition: 'center center'
+  },
+  {
+    id: 13,
+    title: `EP-13: Bishop Gurley`,
+    description: `Bishop Gurley Interview`,
+    duration: '1:52:40',
+    image: 'https://img.youtube.com/vi/WuBNF2Ru_2E/maxresdefault.jpg',
+    url: 'https://www.youtube.com/watch?v=WuBNF2Ru_2E',
+    bgPosition: 'center center'
+  },
+  {
+    id: 14,
+    title: `EP-14: Hip-hop Top 20 Debate`,
+    description: `Hip-hop Top 20 Debate`,
+    duration: '120 Mins',
+    image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
+    url: '#',
+    bgPosition: 'center center'
+  },
+  {
+    id: 15,
+    title: `EP-15: From wrong to right`,
+    description: `From wrong to right`,
+    duration: '120 Mins',
+    image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
+    url: '#',
+    bgPosition: 'center center'
+  }
+];
+
+export default function Episodes() {
+  return (
+    <motion.main 
+      id="main-content"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="bg-black text-white font-sans selection:bg-white selection:text-black min-h-screen relative overflow-x-hidden"
+    >
+      {/* Hyper Gradient Background */}
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-black">
+        <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] rounded-full bg-purple-900/40 mix-blend-screen filter blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-blue-900/30 mix-blend-screen filter blur-[100px] animate-pulse" style={{ animationDuration: '10s', animationDelay: '1s' }} />
+        <div className="absolute top-[20%] right-[10%] w-[50%] h-[50%] rounded-full bg-rose-900/30 mix-blend-screen filter blur-[100px] animate-pulse" style={{ animationDuration: '12s', animationDelay: '2s' }} />
+      </div>
+
+      {/* Header */}
+      <div className="relative z-50 p-6 sm:p-8 md:p-12 lg:p-16 pb-0">
+        <div className="max-w-[1600px] mx-auto flex items-center justify-between relative z-10">
+          <div>
+            <Link to="/" className="btn-primary mb-4 text-xs font-mono tracking-widest uppercase self-start inline-flex">
+              <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
+              Back to Home
+            </Link>
+            <h1 className="font-display text-3xl sm:text-4xl md:text-5xl tracking-wide uppercase drop-shadow-lg text-white">
+              All Episodes
+            </h1>
+          </div>
+          <div className="hidden md:block text-right bg-white/5 backdrop-blur-md px-4 py-2 rounded-lg border border-white/10">
+            <p className="font-mono text-xs tracking-[0.2em] text-neutral-400 uppercase">Listening Pleasure</p>
+            <p className="font-mono text-xs tracking-[0.2em] text-neutral-400 uppercase mt-1">Podcast Archive</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Grid Container */}
+      <div className="relative z-10 p-6 sm:p-8 md:p-12 lg:p-16 max-w-[1600px] mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-8">
+          {episodes.map((ep) => (
+            <div key={ep.id} className="group [perspective:1000px] h-[350px] sm:h-[400px] w-full cursor-pointer">
+              <div className="relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] group-focus-within:[transform:rotateY(180deg)]">
+                
+                {/* Front of Card */}
+                <div 
+                  className="absolute inset-0 [backface-visibility:hidden] rounded-xl border border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.5)] bg-neutral-900 overflow-hidden"
+                  aria-hidden="true"
+                >
+                  <div 
+                    className="absolute inset-0 bg-cover"
+                    style={{ 
+                      backgroundImage: `url('${ep.image}')`,
+                      backgroundPosition: 'center center',
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/80" />
+                  <div className="absolute inset-0 flex items-center justify-center p-6">
+                    <h3 className="font-mono font-bold text-lg sm:text-xl tracking-widest text-white uppercase drop-shadow-md text-center">
+                      {ep.title.split(':')[0]}
+                    </h3>
+                  </div>
+                </div>
+
+                {/* Back of Card */}
+                <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-xl border border-white/20 shadow-[0_10px_30px_rgba(0,0,0,0.8)] bg-neutral-900 overflow-hidden flex flex-col p-6 text-center">
+                  <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 to-black pointer-events-none" />
+                  
+                  <div className="relative z-10 flex flex-col h-full items-center justify-center">
+                    <div className="flex-grow flex flex-col items-center justify-center">
+                      <h3 className="font-display text-xl sm:text-2xl uppercase mb-2 text-white leading-tight">
+                        {ep.title}
+                      </h3>
+                      <p className="font-mono text-xs text-neutral-400 mb-4 tracking-widest uppercase">
+                        {ep.duration}
+                      </p>
+                      <p className="text-sm text-neutral-300 leading-relaxed">
+                        {ep.description}
+                      </p>
+                    </div>
+                    
+                    <a
+                      href={ep.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Watch ${ep.title} on YouTube`}
+                      className="btn-primary mt-4 w-full font-mono text-xs font-bold tracking-[0.2em] uppercase justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                    >
+                      Watch Now
+                      <PlayCircle className="w-4 h-4 ml-2" aria-hidden="true" />
+                    </a>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </motion.main>
+  );
+}
