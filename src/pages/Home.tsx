@@ -142,7 +142,7 @@ export default function Home({ isLoading = false }: { isLoading?: boolean }) {
         muted 
         playsInline 
         aria-hidden="true"
-        className="fixed inset-0 w-full h-full object-cover opacity-[0.35] md:opacity-50 pointer-events-none z-0 bg-black"
+        className="fixed inset-0 w-full h-full object-contain md:object-cover opacity-[0.35] md:opacity-50 pointer-events-none z-0 bg-black"
         src="/background.mp4"
       />
       
