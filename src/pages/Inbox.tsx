@@ -96,11 +96,16 @@ export default function Inbox() {
 
   const handleLogin = async () => {
     try {
+      setError(null);
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
-    } catch (err) {
+    } catch (err: any) {
       console.error("Login error:", err);
-      setError("Login failed. Please try again.");
+      if (err.code === 'auth/unauthorized-domain') {
+        setError(`Domain not authorized. Please add this website's URL in Firebase Console -> Authentication -> Settings -> Authorized domains.`);
+      } else {
+        setError(`Login failed: ${err.message || 'Please try again.'}`);
+      }
     }
   };
 
@@ -144,6 +149,14 @@ export default function Inbox() {
         <p className="text-neutral-400 mb-8 text-center max-w-md">
           This area is restricted to podcast administrators. Please log in with your authorized Google account.
         </p>
+        
+        {error && (
+          <div className="bg-red-500/10 border border-red-500/20 p-4 rounded-xl text-red-400 text-sm font-mono mb-8 flex items-center gap-3 max-w-md text-left leading-relaxed">
+            <AlertCircle className="w-5 h-5 shrink-0" />
+            {error}
+          </div>
+        )}
+
         <button 
           onClick={handleLogin}
           className="bg-white text-black font-display text-sm uppercase tracking-widest py-4 px-10 rounded-full hover:bg-neutral-200 transition-all flex items-center gap-3"
