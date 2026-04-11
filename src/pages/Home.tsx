@@ -244,15 +244,13 @@ export default function Home({ isLoading = false }: { isLoading?: boolean }) {
             <a href="https://www.facebook.com/share/Y2bcS47qQhtPR47n/?mibextid=qi20mg" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors py-1 focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none rounded" aria-label="Facebook">
               <Facebook className="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true" />
             </a>
-            {adminClickCount >= 5 && (
-              <Link to="/inbox" className="hover:text-white transition-colors py-1 opacity-40 hover:opacity-100 ml-2 flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none rounded">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3" aria-hidden="true">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                  <path d="m9 12 2 2 4-4"/>
-                </svg>
-                ADMIN
-              </Link>
-            )}
+            <Link to="/inbox" className="hover:text-white transition-colors py-1 opacity-40 hover:opacity-100 ml-2 flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none rounded">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3" aria-hidden="true">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <path d="m9 12 2 2 4-4"/>
+              </svg>
+              ADMIN
+            </Link>
           </div>
         </div>
       </div>
