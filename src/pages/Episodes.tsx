@@ -98,9 +98,9 @@ const episodes = [
     id: 11,
     title: `EP-11: Battlefields To Civilian Life`,
     description: `Battlefields To Civilian Life`,
-    duration: '120 Mins',
-    image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
-    url: 'https://www.youtube.com/@ListeningPleasurePodcast',
+    duration: '1:45:28',
+    image: '/ep11-thumb.png',
+    url: 'https://www.youtube.com/live/BYS4NOK-Ts4?si=l94NeXU8pFX_aMYm',
     bgPosition: 'center center'
   },
   {
