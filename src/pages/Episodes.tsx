@@ -9,7 +9,7 @@ const episodes = [
     title: `EP-01: Episode 1`,
     description: `Episode 1 of the Listening Pleasure Podcast`,
     duration: '120 Mins',
-    image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
+    image: '/ep1-thumb.png',
     url: '#',
     bgPosition: 'center center'
   },
