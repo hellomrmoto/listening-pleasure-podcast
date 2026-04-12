@@ -10,7 +10,7 @@ const episodes = [
     description: `Episode 1 of the Listening Pleasure Podcast`,
     duration: '120 Mins',
     image: '/ep1-thumb.png',
-    url: '#',
+    url: 'https://www.youtube.com/@ListeningPleasurePodcast',
     bgPosition: 'center center'
   },
   {
@@ -19,7 +19,7 @@ const episodes = [
     description: `Bridging The Gap`,
     duration: '120 Mins',
     image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
-    url: '#',
+    url: 'https://www.youtube.com/@ListeningPleasurePodcast',
     bgPosition: 'center center'
   },
   {
@@ -28,7 +28,7 @@ const episodes = [
     description: `Derrick Gurley Jr Interview`,
     duration: '120 Mins',
     image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
-    url: '#',
+    url: 'https://www.youtube.com/@ListeningPleasurePodcast',
     bgPosition: 'center center'
   },
   {
@@ -37,7 +37,7 @@ const episodes = [
     description: `Celebrating our 2nd year anniversary`,
     duration: '120 Mins',
     image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
-    url: '#',
+    url: 'https://www.youtube.com/@ListeningPleasurePodcast',
     bgPosition: 'center center'
   },
   {
@@ -46,7 +46,7 @@ const episodes = [
     description: `Realtor & Home buying discussion`,
     duration: '120 Mins',
     image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
-    url: '#',
+    url: 'https://www.youtube.com/@ListeningPleasurePodcast',
     bgPosition: 'center center'
   },
   {
@@ -55,7 +55,7 @@ const episodes = [
     description: `I'Ziah Emery Interview`,
     duration: '120 Mins',
     image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
-    url: '#',
+    url: 'https://www.youtube.com/@ListeningPleasurePodcast',
     bgPosition: 'center center'
   },
   {
@@ -64,7 +64,7 @@ const episodes = [
     description: `Travel`,
     duration: '120 Mins',
     image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
-    url: '#',
+    url: 'https://www.youtube.com/@ListeningPleasurePodcast',
     bgPosition: 'center center'
   },
   {
@@ -82,7 +82,7 @@ const episodes = [
     description: `Mac special`,
     duration: '120 Mins',
     image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
-    url: '#',
+    url: 'https://www.youtube.com/@ListeningPleasurePodcast',
     bgPosition: 'center center'
   },
   {
@@ -91,7 +91,7 @@ const episodes = [
     description: `C.P.S & Goverment Issues`,
     duration: '120 Mins',
     image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
-    url: '#',
+    url: 'https://www.youtube.com/@ListeningPleasurePodcast',
     bgPosition: 'center center'
   },
   {
@@ -100,7 +100,7 @@ const episodes = [
     description: `Battlefields To Civilian Life`,
     duration: '120 Mins',
     image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
-    url: '#',
+    url: 'https://www.youtube.com/@ListeningPleasurePodcast',
     bgPosition: 'center center'
   },
   {
@@ -109,7 +109,7 @@ const episodes = [
     description: `Kevin White Interview`,
     duration: '120 Mins',
     image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
-    url: '#',
+    url: 'https://www.youtube.com/@ListeningPleasurePodcast',
     bgPosition: 'center center'
   },
   {
@@ -127,7 +127,7 @@ const episodes = [
     description: `Hip-hop Top 20 Debate`,
     duration: '120 Mins',
     image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
-    url: '#',
+    url: 'https://www.youtube.com/@ListeningPleasurePodcast',
     bgPosition: 'center center'
   },
   {
@@ -136,7 +136,7 @@ const episodes = [
     description: `From wrong to right`,
     duration: '120 Mins',
     image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
-    url: '#',
+    url: 'https://www.youtube.com/@ListeningPleasurePodcast',
     bgPosition: 'center center'
   }
 ];
