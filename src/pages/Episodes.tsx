@@ -178,9 +178,9 @@ export default function Episodes() {
 
       {/* Grid Container */}
       <div className="relative z-10 p-6 sm:p-8 md:p-12 lg:p-16 max-w-[1600px] mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
           {episodes.map((ep) => (
-            <div key={ep.id} className="group [perspective:1000px] h-[350px] sm:h-[400px] w-full cursor-pointer">
+            <div key={ep.id} className="group [perspective:1000px] aspect-video w-full cursor-pointer">
               <div className="relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] group-focus-within:[transform:rotateY(180deg)]">
                 
                 {/* Front of Card */}
@@ -195,27 +195,27 @@ export default function Episodes() {
                       backgroundPosition: 'center center',
                     }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/80" />
-                  <div className="absolute inset-0 flex items-center justify-center p-6">
-                    <h3 className="font-mono font-bold text-lg sm:text-xl tracking-widest text-white uppercase drop-shadow-md text-center">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 p-4">
+                    <h3 className="font-mono font-bold text-sm sm:text-base tracking-widest text-white uppercase drop-shadow-md text-left">
                       {ep.title.split(':')[0]}
                     </h3>
                   </div>
                 </div>
 
                 {/* Back of Card */}
-                <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-xl border border-white/20 shadow-[0_10px_30px_rgba(0,0,0,0.8)] bg-neutral-900 overflow-hidden flex flex-col p-6 text-center">
+                <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-xl border border-white/20 shadow-[0_10px_30px_rgba(0,0,0,0.8)] bg-neutral-900 overflow-hidden flex flex-col p-4 sm:p-5 text-center">
                   <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 to-black pointer-events-none" />
                   
                   <div className="relative z-10 flex flex-col h-full items-center justify-center">
-                    <div className="flex-grow flex flex-col items-center justify-center">
-                      <h3 className="font-display text-xl sm:text-2xl uppercase mb-2 text-white leading-tight">
+                    <div className="flex-grow flex flex-col items-center justify-center w-full">
+                      <h3 className="font-display text-lg sm:text-xl uppercase mb-1 text-white leading-tight line-clamp-2">
                         {ep.title}
                       </h3>
-                      <p className="font-mono text-xs text-neutral-400 mb-4 tracking-widest uppercase">
+                      <p className="font-mono text-[10px] text-neutral-400 mb-2 tracking-widest uppercase">
                         {ep.duration}
                       </p>
-                      <p className="text-sm text-neutral-300 leading-relaxed">
+                      <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed line-clamp-2">
                         {ep.description}
                       </p>
                     </div>
@@ -225,10 +225,10 @@ export default function Episodes() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={`Watch ${ep.title} on YouTube`}
-                      className="btn-primary mt-4 w-full font-mono text-xs font-bold tracking-[0.2em] uppercase justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                      className="btn-primary mt-2 w-full font-mono text-[10px] sm:text-xs font-bold tracking-[0.2em] uppercase justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                     >
                       Watch Now
-                      <PlayCircle className="w-4 h-4 ml-2" aria-hidden="true" />
+                      <PlayCircle className="w-3 h-3 sm:w-4 sm:h-4 ml-2" aria-hidden="true" />
                     </a>
                   </div>
                 </div>
