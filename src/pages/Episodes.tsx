@@ -125,9 +125,9 @@ const episodes = [
     id: 14,
     title: `EP-14: Hip-hop Top 20 Debate`,
     description: `Hip-hop Top 20 Debate`,
-    duration: '120 Mins',
-    image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
-    url: 'https://www.youtube.com/@ListeningPleasurePodcast',
+    duration: '2:06:37',
+    image: '/ep14-thumb.png',
+    url: 'https://www.youtube.com/live/gutWR3P5yZg?si=8KjeXdtfJqjWJUND',
     bgPosition: 'center center'
   },
   {
