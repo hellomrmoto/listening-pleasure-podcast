@@ -134,9 +134,9 @@ const episodes = [
     id: 15,
     title: `EP-15: From wrong to right`,
     description: `From wrong to right`,
-    duration: '120 Mins',
-    image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
-    url: 'https://www.youtube.com/@ListeningPleasurePodcast',
+    duration: '1:58:46',
+    image: '/ep15-thumb.png',
+    url: 'https://www.youtube.com/live/6257XcIlOQY?si=A6dn-WS0kbb_20Br',
     bgPosition: 'center center'
   }
 ];
