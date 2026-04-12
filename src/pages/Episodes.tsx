@@ -24,10 +24,10 @@ const episodes = [
   },
   {
     id: 3,
-    title: `EP-03: Derrick Gurley Jr`,
+    title: `EP-03: Derrick Gurley Jr Interview`,
     description: `Derrick Gurley Jr Interview`,
-    duration: '120 Mins',
-    image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
+    duration: '50:21',
+    image: '/ep3-thumb.png',
     url: 'https://www.youtube.com/@ListeningPleasurePodcast',
     bgPosition: 'center center'
   },
