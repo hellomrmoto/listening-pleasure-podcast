@@ -134,20 +134,21 @@ export default function Home({ isLoading = false }: { isLoading?: boolean }) {
       transition={{ duration: 0.5, ease: "easeInOut" }}
       className="relative min-h-screen bg-black text-white font-sans selection:bg-white selection:text-black overflow-x-hidden flex flex-col md:block"
     >
-      {/* Video */}
-      <video 
-        ref={videoRef}
-        autoPlay 
-        loop 
-        muted 
-        playsInline 
-        aria-hidden="true"
-        className="fixed inset-0 w-full h-full object-contain md:object-cover opacity-[0.35] md:opacity-50 pointer-events-none z-0 bg-black"
-        src="/background.mp4"
-      />
-      
-      {/* Video Watermark Cover */}
-      <div className="fixed -bottom-4 -right-4 w-48 h-32 md:w-64 md:h-40 bg-gradient-to-tl from-black via-black/95 to-transparent pointer-events-none z-0 blur-sm"></div>
+      {/* Video Container */}
+      <div className="relative md:fixed md:inset-0 w-full aspect-video md:aspect-auto md:h-full z-0 bg-black pointer-events-none shadow-2xl">
+        <video 
+          ref={videoRef}
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          aria-hidden="true"
+          className="w-full h-full object-cover opacity-90 md:opacity-[0.35]"
+          src="/background.mp4"
+        />
+        {/* Video Watermark Cover */}
+        <div className="absolute -bottom-4 -right-4 w-32 h-20 md:w-64 md:h-40 bg-gradient-to-tl from-black via-black/95 to-transparent z-0 blur-sm"></div>
+      </div>
 
       {/* Content Container */}
       <div className="relative z-10 flex-1 p-6 pt-12 sm:p-8 md:p-12 lg:p-16 flex flex-col md:grid md:grid-cols-12 md:grid-rows-[auto_1fr_auto] gap-y-10 md:gap-y-12 md:min-h-screen">
