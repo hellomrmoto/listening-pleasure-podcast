@@ -118,7 +118,7 @@ const episodes = [
     description: `Bishop Gurley Interview`,
     duration: '1:52:40',
     image: 'https://img.youtube.com/vi/WuBNF2Ru_2E/maxresdefault.jpg',
-    url: 'https://www.youtube.com/watch?v=WuBNF2Ru_2E',
+    url: 'https://www.youtube.com/live/WuBNF2Ru_2E?si=k-qsegFFD97JwwK7',
     bgPosition: 'center center'
   },
   {
