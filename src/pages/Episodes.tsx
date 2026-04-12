@@ -17,8 +17,8 @@ const episodes = [
     id: 2,
     title: `EP-02: Bridging The Gap`,
     description: `Bridging The Gap`,
-    duration: '120 Mins',
-    image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
+    duration: '1:39:59',
+    image: '/ep2-thumb.png',
     url: 'https://www.youtube.com/@ListeningPleasurePodcast',
     bgPosition: 'center center'
   },
