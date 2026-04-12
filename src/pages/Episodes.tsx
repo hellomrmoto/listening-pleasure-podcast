@@ -71,9 +71,9 @@ const episodes = [
     id: 8,
     title: `EP-08: Youth Football Talk`,
     description: `Youth Football Talk`,
-    duration: '120 Mins',
-    image: 'https://img.youtube.com/vi/o_EWZSkjo_E/maxresdefault.jpg',
-    url: 'https://www.youtube.com/watch?v=o_EWZSkjo_E',
+    duration: '1:54:01',
+    image: '/ep8-thumb.png',
+    url: 'https://www.youtube.com/live/FiBRUdv6HFA?si=Dd_22ZALuhRbztRz',
     bgPosition: 'center center'
   },
   {
