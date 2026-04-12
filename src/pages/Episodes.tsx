@@ -180,7 +180,13 @@ export default function Episodes() {
       <div className="relative z-10 p-6 sm:p-8 md:p-12 lg:p-16 max-w-[1600px] mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
           {episodes.map((ep) => (
-            <div key={ep.id} className="group [perspective:1000px] aspect-video w-full cursor-pointer">
+            <a 
+              key={ep.id} 
+              href={ep.url !== '#' ? ep.url : undefined}
+              target={ep.url !== '#' ? "_blank" : undefined}
+              rel={ep.url !== '#' ? "noopener noreferrer" : undefined}
+              className="group [perspective:1000px] aspect-video w-full cursor-pointer block focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-purple-500 rounded-xl"
+            >
               <div className="relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] group-focus-within:[transform:rotateY(180deg)]">
                 
                 {/* Front of Card */}
@@ -220,21 +226,18 @@ export default function Episodes() {
                       </p>
                     </div>
                     
-                    <a
-                      href={ep.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <span
                       aria-label={`Watch ${ep.title} on YouTube`}
                       className="btn-primary mt-2 w-full font-mono text-[10px] sm:text-xs font-bold tracking-[0.2em] uppercase justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                     >
                       Watch Now
                       <PlayCircle className="w-3 h-3 sm:w-4 sm:h-4 ml-2" aria-hidden="true" />
-                    </a>
+                    </span>
                   </div>
                 </div>
 
               </div>
-            </div>
+            </a>
           ))}
         </div>
       </div>
