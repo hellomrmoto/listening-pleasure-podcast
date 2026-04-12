@@ -35,8 +35,8 @@ const episodes = [
     id: 4,
     title: `EP-04: 2nd year anniversary`,
     description: `Celebrating our 2nd year anniversary`,
-    duration: '120 Mins',
-    image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
+    duration: '3:31:16',
+    image: '/ep4-thumb.png',
     url: 'https://www.youtube.com/@ListeningPleasurePodcast',
     bgPosition: 'center center'
   },
