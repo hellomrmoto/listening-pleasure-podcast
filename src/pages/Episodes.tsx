@@ -80,9 +80,9 @@ const episodes = [
     id: 9,
     title: `EP-09: Mac special`,
     description: `Mac special`,
-    duration: '120 Mins',
-    image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
-    url: 'https://www.youtube.com/@ListeningPleasurePodcast',
+    duration: '1:00:01',
+    image: '/ep9-thumb.png',
+    url: 'https://www.youtube.com/live/6BhRKqhIhCA?si=hQQT9uih_YKC5VpQ',
     bgPosition: 'center center'
   },
   {
