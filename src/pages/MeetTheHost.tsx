@@ -8,13 +8,14 @@ interface HostCardProps {
   role: string;
   bio: string;
   imageUrl?: string;
+  imagePosition?: string;
   socials?: {
     instagram?: string;
     facebook?: string;
   };
 }
 
-function HostCard({ name, role, bio, imageUrl, socials }: HostCardProps) {
+function HostCard({ name, role, bio, imageUrl, imagePosition = 'object-center', socials }: HostCardProps) {
   return (
     <div className="bg-neutral-900 border border-white/10 flex flex-col h-full group">
       {/* Image Slot */}
@@ -23,7 +24,7 @@ function HostCard({ name, role, bio, imageUrl, socials }: HostCardProps) {
           <img 
             src={imageUrl} 
             alt={name} 
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+            className={`absolute inset-0 w-full h-full object-cover ${imagePosition} transition-transform duration-700 group-hover:scale-105`} 
             referrerPolicy="no-referrer" 
           />
         ) : (
@@ -101,6 +102,7 @@ export default function MeetTheHost() {
               role="Co-Host & Resident LoudMouf"
               bio={`Mike V is a unique and passionate voice attached to Listening Pleasure. Proud To Be Newport News Born And "Bad Newz Bred," Mike V loves to claim, "Ion Know Everything, I Know A Little Bit About A Lot, If That Makes Sense..."\n\nDuring the day, Mike V Is A Mentor, Working As The Director Of Education Services for Let Out Voices Empower, where he hosts a weekly class with middle-schoolers, as well as sits daily with high-schoolers as well. He has a dedication to helping the next generation navigate the ups and downs of life as best he can. On weekends, you can catch him refereeing youth tackle and adult flag football trying to stay as close to the game he loves as possible.\n\nMike V. has ventured into the podcast world before being on the "Fuxx Ya Fellings Podcast," as well as the "2Kings and A Queen Podcast, previously known as "To Put It In To Perspective." When given the opportunity to co-host with his lifelong family by bond, it was a no-brainer. Creating a space for authentic, real, and informational conversations is the goal of Listening Pleasure.\n\nNo telling what you will hear from Mike V, but it will undoubtedly be the truth as he sees it. Not known for saying what is popular or sugar coating the facts, he will without question turn some heads with his off-the-wall perspectives, comedic timing, and LoudMouf antics.\n\nAway from the microphone, he enjoys being a husband, Pop, And GrandPop and dropping jewels and knowledge on todays youth.`}
               imageUrl="/mike-v.jpg"
+              imagePosition="object-top"
               socials={{
                 facebook: "Mouf AlMikey, Mike Vinson, Da Ref Mike V"
               }}
