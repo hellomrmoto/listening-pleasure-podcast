@@ -107,9 +107,9 @@ const episodes = [
     id: 12,
     title: `EP-12: Kevin White Interview`,
     description: `Kevin White Interview`,
-    duration: '120 Mins',
-    image: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?q=80&w=1000&auto=format&fit=crop',
-    url: 'https://www.youtube.com/@ListeningPleasurePodcast',
+    duration: '49:00',
+    image: '/ep12-thumb.png',
+    url: 'https://www.youtube.com/live/0OgW2hbYW4g?si=jQFCURWPRtpKvqRz',
     bgPosition: 'center center'
   },
   {
