@@ -71,12 +71,19 @@ export default function MeetTheHost() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen text-white font-sans selection:bg-white selection:text-black pb-24 relative overflow-hidden"
-      style={{ 
-        background: 'radial-gradient(ellipse at center, #D4AF37 0%, #002366 100%)'
-      }}
+      className="min-h-screen text-white font-sans selection:bg-white selection:text-black pb-24 relative overflow-hidden bg-[#050505]"
     >
-      <div className="pt-24 px-6 sm:px-8 md:px-12 lg:px-16 max-w-7xl mx-auto w-full">
+      {/* Neon Blue and Gold Background */}
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        {/* Neon Blue Glow */}
+        <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-[#00f3ff]/10 mix-blend-screen filter blur-[120px] animate-pulse" style={{ animationDuration: '10s' }} />
+        {/* Gold Glow */}
+        <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-[#d4af37]/10 mix-blend-screen filter blur-[120px] animate-pulse" style={{ animationDuration: '12s', animationDelay: '1s' }} />
+        {/* Texture */}
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+      </div>
+
+      <div className="relative z-10 pt-24 px-6 sm:px-8 md:px-12 lg:px-16 max-w-7xl mx-auto w-full">
         <Link to="/" className="btn-primary mb-12 text-xs font-mono tracking-widest uppercase inline-flex">
           <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
           Back to Home

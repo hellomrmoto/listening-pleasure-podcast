@@ -10,13 +10,16 @@ export default function SpecialEvents() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="bg-black text-white font-sans selection:bg-white selection:text-black min-h-screen relative overflow-x-hidden flex flex-col items-center pb-24"
+      className="bg-[#050505] text-white font-sans selection:bg-white selection:text-black min-h-screen relative overflow-x-hidden flex flex-col items-center pb-24"
     >
-      {/* Hyper Gradient Background */}
-      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-black">
-        <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] rounded-full bg-purple-900/40 mix-blend-screen filter blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-blue-900/30 mix-blend-screen filter blur-[100px] animate-pulse" style={{ animationDuration: '10s', animationDelay: '1s' }} />
-        <div className="absolute top-[20%] right-[10%] w-[50%] h-[50%] rounded-full bg-rose-900/30 mix-blend-screen filter blur-[100px] animate-pulse" style={{ animationDuration: '12s', animationDelay: '2s' }} />
+      {/* Neon Blue and Gold Background */}
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#050505]">
+        {/* Neon Blue Glow */}
+        <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-[#00f3ff]/10 mix-blend-screen filter blur-[120px] animate-pulse" style={{ animationDuration: '10s' }} />
+        {/* Gold Glow */}
+        <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-[#d4af37]/10 mix-blend-screen filter blur-[120px] animate-pulse" style={{ animationDuration: '12s', animationDelay: '1s' }} />
+        {/* Texture */}
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
       </div>
 
       <div className="relative z-10 p-6 sm:p-8 md:p-12 w-full max-w-[1200px] mx-auto flex flex-col items-center pt-12 md:pt-24">

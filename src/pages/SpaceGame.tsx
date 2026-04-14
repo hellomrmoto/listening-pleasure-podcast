@@ -473,6 +473,15 @@ export default function SpaceGame() {
       exit={{ opacity: 0 }}
       className="relative min-h-screen bg-[#050505] text-white overflow-hidden flex flex-col"
     >
+      {/* Neon Blue and Gold Background */}
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        {/* Neon Blue Glow */}
+        <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-[#00f3ff]/10 mix-blend-screen filter blur-[120px] animate-pulse" style={{ animationDuration: '10s' }} />
+        {/* Gold Glow */}
+        <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-[#d4af37]/10 mix-blend-screen filter blur-[120px] animate-pulse" style={{ animationDuration: '12s', animationDelay: '1s' }} />
+        {/* Texture */}
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+      </div>
       {/* Header Overlay */}
       <header className="absolute top-0 left-0 right-0 p-6 flex items-center justify-between z-50 pointer-events-none">
         <div className="flex items-center gap-4 pointer-events-auto">

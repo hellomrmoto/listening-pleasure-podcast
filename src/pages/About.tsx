@@ -10,9 +10,19 @@ export default function About() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5, ease: "easeInOut" }}
-      className="min-h-screen bg-black text-white font-sans selection:bg-white selection:text-black p-6 sm:p-8 md:p-12 lg:p-16"
+      className="min-h-screen bg-[#050505] text-white font-sans selection:bg-white selection:text-black p-6 sm:p-8 md:p-12 lg:p-16 relative overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto">
+      {/* Neon Blue and Gold Background */}
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        {/* Neon Blue Glow */}
+        <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-[#00f3ff]/10 mix-blend-screen filter blur-[120px] animate-pulse" style={{ animationDuration: '10s' }} />
+        {/* Gold Glow */}
+        <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-[#d4af37]/10 mix-blend-screen filter blur-[120px] animate-pulse" style={{ animationDuration: '12s', animationDelay: '1s' }} />
+        {/* Texture */}
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
         <Link 
           to="/" 
           className="inline-flex items-center text-neutral-400 hover:text-white transition-colors mb-12 font-mono text-sm tracking-widest uppercase focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none rounded"
