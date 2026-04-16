@@ -51,10 +51,18 @@ export default function SpecialEvents() {
             whileHover={{ scale: 1.05, y: -10 }}
             className="relative group cursor-pointer"
           >
-            <div className="w-full aspect-square bg-gradient-to-br from-orange-500/90 to-red-600/90 backdrop-blur-sm rounded-t-[10rem] rounded-b-2xl p-8 flex flex-col items-center justify-center text-center shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-all duration-500 group-hover:shadow-[0_20px_40px_rgba(249,115,22,0.4)] border border-white/20 relative">
-              <Flame className="w-16 h-16 mb-6 text-white drop-shadow-md group-hover:scale-110 transition-transform duration-500" />
-              <h2 className="font-display text-3xl lg:text-4xl uppercase tracking-wider mb-3">Cookout</h2>
-              <p className="font-mono text-xs lg:text-sm text-white/90 tracking-widest uppercase">Food & Good Vibes</p>
+            <div 
+              className="w-full aspect-square bg-cover bg-center backdrop-blur-sm rounded-t-[10rem] rounded-b-2xl p-8 flex flex-col items-center justify-center text-center shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-all duration-500 group-hover:shadow-[0_20px_40px_rgba(249,115,22,0.4)] border border-white/20 relative overflow-hidden"
+              style={{ backgroundImage: 'url(/cookout-bg.png)' }}
+            >
+              {/* Dark Overlay for Readability */}
+              <div className="absolute inset-0 bg-black/50 group-hover:bg-black/40 transition-colors duration-500 z-0" />
+              
+              <div className="relative z-10">
+                <Flame className="w-16 h-16 mb-6 text-white drop-shadow-md group-hover:scale-110 transition-transform duration-500 mx-auto" />
+                <h2 className="font-display text-3xl lg:text-4xl uppercase tracking-wider mb-3">Cookout</h2>
+                <p className="font-mono text-xs lg:text-sm text-white/90 tracking-widest uppercase">Food & Good Vibes</p>
+              </div>
             </div>
           </motion.div>
 
@@ -81,9 +89,13 @@ export default function SpecialEvents() {
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="w-full max-w-4xl bg-neutral-900/40 backdrop-blur-xl border border-white/10 rounded-[3rem] p-8 md:p-16 shadow-2xl relative overflow-hidden mb-12"
+          className="w-full max-w-4xl bg-cover bg-center border border-white/10 rounded-[3rem] p-8 md:p-16 shadow-2xl relative overflow-hidden mb-12"
+          style={{ backgroundImage: 'url(/cookout-bg.png)' }}
         >
-          <div className="absolute top-0 right-0 w-64 h-64 bg-orange-600/10 rounded-full blur-[80px] -mr-32 -mt-32" />
+          {/* Dark Overlay for Readability */}
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm z-0" />
+          
+          <div className="absolute top-0 right-0 w-64 h-64 bg-orange-600/10 rounded-full blur-[80px] -mr-32 -mt-32 z-0" />
           
           <div className="relative z-10 flex flex-col items-center text-center">
             <div className="w-20 h-20 bg-orange-500/10 rounded-3xl flex items-center justify-center mb-8 border border-orange-500/20">

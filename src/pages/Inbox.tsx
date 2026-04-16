@@ -102,9 +102,9 @@ export default function Inbox() {
     } catch (err: any) {
       console.error("Login error:", err);
       if (err.code === 'auth/unauthorized-domain') {
-        setError(`Domain not authorized. Please add this website's URL in Firebase Console -> Authentication -> Settings -> Authorized domains.`);
+        setError(`Domain not authorized. Please ensure "${window.location.hostname}" is added to "Authorized domains" in your Firebase Console (Authentication -> Settings). (Error: ${err.code})`);
       } else {
-        setError(`Login failed: ${err.message || 'Please try again.'}`);
+        setError(`Login failed: ${err.message || 'Please try again.'} (Error code: ${err.code})`);
       }
     }
   };
