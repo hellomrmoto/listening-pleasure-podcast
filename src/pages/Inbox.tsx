@@ -16,7 +16,9 @@ import {
   LogOut,
   ShieldCheck,
   AlertCircle,
-  ChevronRight
+  ChevronRight,
+  ClipboardList,
+  Users
 } from 'lucide-react';
 import { 
   collection, 
@@ -48,12 +50,23 @@ interface Pitch {
   createdAt: Timestamp;
 }
 
+interface Signup {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  guests: string;
+  notes?: string;
+  createdAt: Timestamp;
+}
+
 export default function Inbox() {
   const [user, setUser] = useState<FirebaseUser | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'voice_notes' | 'pitches'>('voice_notes');
+  const [activeTab, setActiveTab] = useState<'voice_notes' | 'pitches' | 'signups'>('voice_notes');
   const [voiceNotes, setVoiceNotes] = useState<VoiceNote[]>([]);
   const [pitches, setPitches] = useState<Pitch[]>([]);
+  const [signups, setSignups] = useState<Signup[]>([]);
   const [playingId, setPlayingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   
@@ -73,6 +86,7 @@ export default function Inbox() {
 
     const vnQuery = query(collection(db, 'voice_notes'), orderBy('createdAt', 'desc'));
     const pQuery = query(collection(db, 'pitches'), orderBy('createdAt', 'desc'));
+    const sQuery = query(collection(db, 'signups'), orderBy('createdAt', 'desc'));
 
     const unsubVN = onSnapshot(vnQuery, (snapshot) => {
       setVoiceNotes(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as VoiceNote)));
@@ -88,9 +102,17 @@ export default function Inbox() {
       setError("Failed to load pitches. Check permissions.");
     });
 
+    const unsubS = onSnapshot(sQuery, (snapshot) => {
+      setSignups(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Signup)));
+    }, (err) => {
+      console.error("Error fetching signups:", err);
+      setError("Failed to load sign ups. Check permissions.");
+    });
+
     return () => {
       unsubVN();
       unsubP();
+      unsubS();
     };
   }, [isAdmin]);
 
@@ -260,6 +282,15 @@ export default function Inbox() {
               <motion.div layoutId="tab-underline" className="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-500" />
             )}
           </button>
+          <button 
+            onClick={() => setActiveTab('signups')}
+            className={`pb-4 text-sm font-mono uppercase tracking-[0.2em] transition-all relative ${activeTab === 'signups' ? 'text-white' : 'text-neutral-500 hover:text-neutral-300'}`}
+          >
+            Sign Ups ({signups.length})
+            {activeTab === 'signups' && (
+              <motion.div layoutId="tab-underline" className="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-500" />
+            )}
+          </button>
         </div>
 
         {error && (
@@ -350,7 +381,7 @@ export default function Inbox() {
                 ))
               )}
             </motion.div>
-          ) : (
+          ) : activeTab === 'pitches' ? (
             <motion.div 
               key="p-tab"
               initial={{ opacity: 0, y: 10 }}
@@ -384,6 +415,66 @@ export default function Inbox() {
                     <button 
                       onClick={() => handleDelete('pitches', pitch.id)}
                       aria-label="Delete pitch"
+                      className="p-2 text-neutral-600 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all self-end sm:self-start focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:outline-none"
+                    >
+                      <Trash2 className="w-5 h-5" aria-hidden="true" />
+                    </button>
+                  </div>
+                ))
+              )}
+            </motion.div>
+          ) : (
+            <motion.div 
+              key="s-tab"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="space-y-4"
+            >
+              {signups.length === 0 ? (
+                <div className="py-20 text-center border border-dashed border-white/10 rounded-3xl">
+                  <ClipboardList className="w-12 h-12 text-neutral-700 mx-auto mb-4" />
+                  <p className="text-neutral-500 font-mono text-sm uppercase tracking-widest">No sign ups yet</p>
+                </div>
+              ) : (
+                signups.map((signup) => (
+                  <div key={signup.id} className="bg-neutral-900/40 border border-white/5 rounded-2xl p-6 hover:border-white/20 transition-all flex flex-col sm:flex-row gap-6 items-start">
+                    <div className="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center shrink-0">
+                      <ClipboardList className="w-6 h-6" />
+                    </div>
+                    
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-3">
+                        <span className="text-sm font-medium text-white">{signup.name}</span>
+                        <span className="text-xs text-neutral-500 font-mono uppercase tracking-widest">{signup.email}</span>
+                        <span className="text-[10px] text-neutral-600 font-mono uppercase tracking-widest">• {formatTime(signup.createdAt)}</span>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                        {signup.phone && (
+                          <div className="flex items-center gap-2">
+                            <span className="text-[10px] font-mono uppercase tracking-widest text-neutral-500">Phone:</span>
+                            <span className="text-sm text-neutral-300">{signup.phone}</span>
+                          </div>
+                        )}
+                        <div className="flex items-center gap-2">
+                          <Users className="w-4 h-4 text-neutral-500" />
+                          <span className="text-[10px] font-mono uppercase tracking-widest text-neutral-500">Guests:</span>
+                          <span className="text-sm text-neutral-300">+{signup.guests}</span>
+                        </div>
+                      </div>
+                      
+                      {signup.notes && (
+                        <div className="mt-4 p-4 bg-white/5 rounded-xl border border-white/5">
+                          <span className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 block mb-1">Notes / Diet:</span>
+                          <p className="text-neutral-300 text-sm leading-relaxed">{signup.notes}</p>
+                        </div>
+                      )}
+                    </div>
+
+                    <button 
+                      onClick={() => handleDelete('signups', signup.id)}
+                      aria-label="Delete signup"
                       className="p-2 text-neutral-600 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all self-end sm:self-start focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:outline-none"
                     >
                       <Trash2 className="w-5 h-5" aria-hidden="true" />
