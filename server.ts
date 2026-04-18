@@ -46,6 +46,9 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
       if (type === 'pitch') {
         subject = `New Podcast Pitch from ${name || 'Anonymous'}`;
         text = `You received a new topic pitch.\n\nFrom: ${name || 'Anonymous'}\nEmail: ${email}\n\nTopic/Pitch:\n${topic}`;
+      } else if (type === 'signup') {
+        subject = `🎉 New Event Sign-Up from ${name || 'Anonymous'}`;
+        text = `You have a new sign-up for the listening party!\n\nName: ${name}\nEmail: ${email}\nTime Slot: ${req.body.timeSlot}\nPhone Number: ${req.body.phone || 'Not provided'}\nQuick Message: ${req.body.notes || 'None'}`;
       } else {
         subject = `New ${type === 'video' ? 'Video' : 'Voice'} Message from ${name || 'Anonymous'}`;
         text = `You received a new ${type} message.\n\nFrom: ${name || 'Anonymous'}\nEmail: ${email}\n\nA copy of the recording is attached.`;

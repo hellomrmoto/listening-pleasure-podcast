@@ -62,6 +62,21 @@ export default function SignUp() {
         ...formData,
         createdAt: serverTimestamp()
       });
+      
+      // Trigger email notification in the background
+      fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'signup',
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          timeSlot: formData.timeSlot,
+          notes: formData.notes
+        })
+      }).catch(err => console.error("Failed to send notification email:", err));
+
       setIsSuccess(true);
     } catch (err: any) {
       console.error("Error submitting sign up:", err);
