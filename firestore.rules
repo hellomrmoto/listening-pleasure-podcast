@@ -142,5 +142,13 @@ service cloud.firestore {
       // Only admins can read, update, or delete signups
       allow read, update, delete: if isAdmin();
     }
+    
+    match /settings/{settingId} {
+      // Anyone can read settings (e.g., to check if we are live!)
+      allow read: if true;
+      
+      // Only admins can update settings
+      allow create, update, delete: if isAdmin();
+    }
   }
 }

@@ -5,6 +5,7 @@ import { PlayCircle, Instagram, Facebook } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import VoicemailWidget from '../components/VoicemailWidget';
+import { useLiveStream } from '../hooks/useLiveStream';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,6 +17,7 @@ export default function Home({ isLoading = false }: { isLoading?: boolean }) {
   const widgetContainerRef = useRef<HTMLDivElement>(null);
   const widgetInnerRef = useRef<HTMLDivElement>(null);
   const navContainerRef = useRef<HTMLDivElement>(null);
+  const { liveData } = useLiveStream();
 
   useEffect(() => {
     if (videoRef.current) {
@@ -181,6 +183,12 @@ export default function Home({ isLoading = false }: { isLoading?: boolean }) {
               className="hover:text-purple-600 hover:bg-white hover:scale-105 transition-all duration-300 uppercase py-2 px-3 sm:px-5 rounded-full inline-block whitespace-nowrap"
             >
               Episodes
+            </Link>
+            <Link 
+              to="/live"
+              className={`transition-all duration-300 uppercase py-2 px-3 sm:px-5 rounded-full inline-block whitespace-nowrap ${liveData?.isLive ? 'bg-red-500/20 text-red-500 border border-red-500/50 glow-target animate-pulse' : 'hover:text-purple-600 hover:bg-white hover:scale-105'}`}
+            >
+              {liveData?.isLive ? '🔴 LIVE' : 'LIVE'}
             </Link>
             <Link 
               to="/about"

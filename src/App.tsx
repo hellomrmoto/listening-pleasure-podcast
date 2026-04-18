@@ -12,6 +12,8 @@ import SpecialEvents from './pages/SpecialEvents';
 import SignUp from './pages/SignUp';
 import LoadingScreen from './components/LoadingScreen';
 
+import LiveStream from './pages/LiveStream';
+
 export default function App() {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
@@ -39,6 +41,7 @@ export default function App() {
               <Route path="/play" element={<SpaceGame />} />
               <Route path="/special-events" element={<SpecialEvents />} />
               <Route path="/sign-up" element={<SignUp />} />
+              <Route path="/live" element={<LiveStream />} />
             </Routes>
           </motion.main>
         </AnimatePresence>

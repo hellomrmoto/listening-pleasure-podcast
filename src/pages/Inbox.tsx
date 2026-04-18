@@ -18,7 +18,8 @@ import {
   AlertCircle,
   ChevronRight,
   ClipboardList,
-  Clock
+  Radio,
+  Settings
 } from 'lucide-react';
 import { 
   collection, 
@@ -27,10 +28,13 @@ import {
   onSnapshot, 
   deleteDoc, 
   doc,
-  Timestamp 
+  setDoc,
+  Timestamp,
+  serverTimestamp 
 } from 'firebase/firestore';
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, User as FirebaseUser } from 'firebase/auth';
 import { db, auth } from '../firebase';
+import { useLiveStream } from '../hooks/useLiveStream';
 
 interface VoiceNote {
   id: string;
@@ -60,15 +64,22 @@ interface Signup {
   createdAt: Timestamp;
 }
 
+type TabType = 'voice_notes' | 'pitches' | 'signups' | 'settings';
+
 export default function Inbox() {
   const [user, setUser] = useState<FirebaseUser | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'voice_notes' | 'pitches' | 'signups'>('voice_notes');
+  const [activeTab, setActiveTab] = useState<TabType>('voice_notes');
   const [voiceNotes, setVoiceNotes] = useState<VoiceNote[]>([]);
   const [pitches, setPitches] = useState<Pitch[]>([]);
   const [signups, setSignups] = useState<Signup[]>([]);
   const [playingId, setPlayingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  
+  const { liveData } = useLiveStream();
+  const [liveUrlDraft, setLiveUrlDraft] = useState('');
+  const [isLiveDraft, setIsLiveDraft] = useState(false);
+  const [isSavingSettings, setIsSavingSettings] = useState(false);
   
   const adminEmails = ["caseydubbz2003@gmail.com", "jwedmonds22@gmail.com"];
   const isAdmin = user?.email && adminEmails.includes(user.email);
@@ -80,6 +91,13 @@ export default function Inbox() {
     });
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (liveData) {
+      setLiveUrlDraft(liveData.videoUrl || '');
+      setIsLiveDraft(liveData.isLive || false);
+    }
+  }, [liveData]);
 
   useEffect(() => {
     if (!isAdmin) return;
@@ -115,6 +133,29 @@ export default function Inbox() {
       unsubS();
     };
   }, [isAdmin]);
+
+  const handleUpdateSettings = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user) return;
+    
+    setIsSavingSettings(true);
+    setError(null);
+    try {
+      await setDoc(doc(db, 'settings', 'livestream'), {
+        isLive: isLiveDraft,
+        videoUrl: liveUrlDraft,
+        title: 'Listening Pleasure LIVE',
+        description: 'Tune in directly below for our latest live broadcast!',
+        updatedAt: serverTimestamp()
+      });
+      alert("Settings updated successfully!");
+    } catch (err: any) {
+      console.error(err);
+      setError('Failed to update live stream settings.');
+    } finally {
+      setIsSavingSettings(false);
+    }
+  };
 
   const handleLogin = async () => {
     try {
@@ -288,6 +329,15 @@ export default function Inbox() {
           >
             Sign Ups ({signups.length})
             {activeTab === 'signups' && (
+              <motion.div layoutId="tab-underline" className="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-500" />
+            )}
+          </button>
+          <button 
+            onClick={() => setActiveTab('settings')}
+            className={`pb-4 text-sm font-mono uppercase tracking-[0.2em] transition-all relative ${activeTab === 'settings' ? 'text-white' : 'text-neutral-500 hover:text-neutral-300'}`}
+          >
+            Live Manager
+            {activeTab === 'settings' && (
               <motion.div layoutId="tab-underline" className="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-500" />
             )}
           </button>
@@ -482,6 +532,69 @@ export default function Inbox() {
                   </div>
                 ))
               )}
+            </motion.div>
+          )}
+
+          {activeTab === 'settings' && (
+            <motion.div 
+              key="settings-tab"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="bg-neutral-900/40 border border-white/5 rounded-2xl p-6 md:p-8"
+            >
+              <div className="flex items-center gap-3 mb-8">
+                <Radio className="w-6 h-6 text-red-500" />
+                <h2 className="text-xl font-bold text-white">Live Stream Manager</h2>
+              </div>
+              
+              <form onSubmit={handleUpdateSettings} className="space-y-6 max-w-2xl">
+                <div>
+                  <label className="block text-xs font-mono tracking-widest text-neutral-400 uppercase mb-2">
+                    YouTube Live URL
+                  </label>
+                  <input
+                    type="url"
+                    value={liveUrlDraft}
+                    onChange={(e) => setLiveUrlDraft(e.target.value)}
+                    placeholder="https://www.youtube.com/live/..."
+                    className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-neutral-600 focus:outline-none focus:border-[#00f3ff] transition-colors font-mono text-sm"
+                  />
+                  <p className="mt-2 text-xs text-neutral-500">Paste the full YouTube Live link here before your broadcast.</p>
+                </div>
+
+                <div className="flex items-center gap-4 p-4 bg-black/30 rounded-xl border border-white/5">
+                  <div className="flex-1">
+                    <h3 className="text-sm font-medium text-white">Broadcast Status</h3>
+                    <p className="text-xs text-neutral-500 mt-1">
+                      Turn this ON to embed the player and show the glowing LIVE button on the website.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIsLiveDraft(!isLiveDraft)}
+                    className={`relative w-14 h-8 rounded-full transition-colors ${
+                      isLiveDraft ? 'bg-red-500' : 'bg-neutral-700'
+                    }`}
+                  >
+                    <span
+                      className={`absolute top-1 left-1 bg-white w-6 h-6 rounded-full transition-transform ${
+                        isLiveDraft ? 'transform translate-x-6' : ''
+                      }`}
+                    />
+                  </button>
+                </div>
+
+                <div className="pt-4 border-t border-white/5">
+                  <button
+                    type="submit"
+                    disabled={isSavingSettings}
+                    className="btn-primary w-full sm:w-auto px-8"
+                  >
+                    {isSavingSettings ? 'Saving...' : 'Update Settings'}
+                  </button>
+                </div>
+              </form>
             </motion.div>
           )}
         </AnimatePresence>
