@@ -30,7 +30,7 @@ service cloud.firestore {
     //   - name: string (required, max 100 chars)
     //   - email: string (required, valid email, max 255 chars)
     //   - phone: string (optional, max 50 chars)
-    //   - guests: string (required, max 50 chars)
+    //   - timeSlot: string (required, max 50 chars)
     //   - notes: string (optional, max 2000 chars)
     //   - createdAt: timestamp (required)
     //
@@ -100,8 +100,8 @@ service cloud.firestore {
     }
     
     function isValidSignup() {
-      return hasRequiredFields(['name', 'email', 'guests', 'createdAt']) &&
-             hasOnlyAllowedFields(['name', 'email', 'phone', 'guests', 'notes', 'createdAt']) &&
+      return hasRequiredFields(['name', 'email', 'timeSlot', 'createdAt']) &&
+             hasOnlyAllowedFields(['name', 'email', 'phone', 'timeSlot', 'notes', 'createdAt']) &&
              request.resource.data.name is string &&
              request.resource.data.name.size() > 0 &&
              request.resource.data.name.size() <= 100 &&
@@ -109,8 +109,8 @@ service cloud.firestore {
              request.resource.data.email.size() <= 255 &&
              isValidEmail(request.resource.data.email) &&
              isValidOptionalString('phone', 0, 50) &&
-             request.resource.data.guests is string &&
-             request.resource.data.guests.size() <= 50 &&
+             request.resource.data.timeSlot is string &&
+             request.resource.data.timeSlot.size() <= 50 &&
              isValidOptionalString('notes', 0, 2000) &&
              request.resource.data.createdAt is timestamp;
     }

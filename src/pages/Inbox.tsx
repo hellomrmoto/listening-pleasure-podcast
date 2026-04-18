@@ -18,7 +18,7 @@ import {
   AlertCircle,
   ChevronRight,
   ClipboardList,
-  Users
+  Clock
 } from 'lucide-react';
 import { 
   collection, 
@@ -55,7 +55,7 @@ interface Signup {
   name: string;
   email: string;
   phone?: string;
-  guests: string;
+  timeSlot: string;
   notes?: string;
   createdAt: Timestamp;
 }
@@ -458,15 +458,15 @@ export default function Inbox() {
                           </div>
                         )}
                         <div className="flex items-center gap-2">
-                          <Users className="w-4 h-4 text-neutral-500" />
-                          <span className="text-[10px] font-mono uppercase tracking-widest text-neutral-500">Guests:</span>
-                          <span className="text-sm text-neutral-300">+{signup.guests}</span>
+                          <Clock className="w-4 h-4 text-neutral-500" />
+                          <span className="text-[10px] font-mono uppercase tracking-widest text-neutral-500">Time Slot:</span>
+                          <span className="text-sm text-neutral-300 font-bold text-[#00f3ff]">{signup.timeSlot}</span>
                         </div>
                       </div>
                       
                       {signup.notes && (
                         <div className="mt-4 p-4 bg-white/5 rounded-xl border border-white/5">
-                          <span className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 block mb-1">Notes / Diet:</span>
+                          <span className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 block mb-1">Message:</span>
                           <p className="text-neutral-300 text-sm leading-relaxed">{signup.notes}</p>
                         </div>
                       )}
