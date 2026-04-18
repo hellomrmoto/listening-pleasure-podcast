@@ -62,7 +62,7 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
       const mailOptions = {
         from: `"Listening Pleasure Podcast" <${process.env.EMAIL_USER}>`,
-        to: "listeningpleasure-podcast@gmail.com",
+        to: "listeningpleasurepodcast@gmail.com",
         subject,
         text,
         attachments,
