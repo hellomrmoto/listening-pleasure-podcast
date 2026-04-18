@@ -24,6 +24,16 @@ service cloud.firestore {
     //   - type: string (optional, enum: audio, video) - The type of message
     //   - createdAt: timestamp (required) - When the voice note was submitted
     //
+    // Collection: signups
+    // Document ID: auto-generated
+    // Fields:
+    //   - name: string (required, max 100 chars)
+    //   - email: string (required, valid email, max 255 chars)
+    //   - phone: string (optional, max 50 chars)
+    //   - guests: string (required, max 50 chars)
+    //   - notes: string (optional, max 2000 chars)
+    //   - createdAt: timestamp (required)
+    //
     // ===============================================================
     
     // ===============================================================
@@ -89,6 +99,22 @@ service cloud.firestore {
              request.resource.data.createdAt is timestamp;
     }
     
+    function isValidSignup() {
+      return hasRequiredFields(['name', 'email', 'guests', 'createdAt']) &&
+             hasOnlyAllowedFields(['name', 'email', 'phone', 'guests', 'notes', 'createdAt']) &&
+             request.resource.data.name is string &&
+             request.resource.data.name.size() > 0 &&
+             request.resource.data.name.size() <= 100 &&
+             request.resource.data.email is string &&
+             request.resource.data.email.size() <= 255 &&
+             isValidEmail(request.resource.data.email) &&
+             isValidOptionalString('phone', 0, 50) &&
+             request.resource.data.guests is string &&
+             request.resource.data.guests.size() <= 50 &&
+             isValidOptionalString('notes', 0, 2000) &&
+             request.resource.data.createdAt is timestamp;
+    }
+    
     // ===============================================================
     // Rules
     // ===============================================================
@@ -106,6 +132,14 @@ service cloud.firestore {
       allow create: if isValidVoiceNote();
       
       // Only admins can read, update, or delete voice notes
+      allow read, update, delete: if isAdmin();
+    }
+    
+    match /signups/{signupId} {
+      // Anyone can submit a signup check
+      allow create: if isValidSignup();
+      
+      // Only admins can read, update, or delete signups
       allow read, update, delete: if isAdmin();
     }
   }
