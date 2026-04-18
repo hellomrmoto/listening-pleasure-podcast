@@ -195,6 +195,12 @@ export default function Home({ isLoading = false }: { isLoading?: boolean }) {
               Special Events
             </Link>
             <Link 
+              to="/sign-up"
+              className="hover:text-purple-600 hover:bg-white hover:scale-105 transition-all duration-300 uppercase py-2 px-3 sm:px-5 rounded-full inline-block whitespace-nowrap"
+            >
+              Sign Up
+            </Link>
+            <Link 
               to="/pitch"
               className="hover:text-purple-600 hover:bg-white hover:scale-105 transition-all duration-300 uppercase py-2 px-3 sm:px-5 rounded-full inline-block whitespace-nowrap text-white"
             >

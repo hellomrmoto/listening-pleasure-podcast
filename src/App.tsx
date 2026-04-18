@@ -9,6 +9,7 @@ import About from './pages/About';
 import Inbox from './pages/Inbox';
 import SpaceGame from './pages/SpaceGame';
 import SpecialEvents from './pages/SpecialEvents';
+import SignUp from './pages/SignUp';
 import LoadingScreen from './components/LoadingScreen';
 
 export default function App() {
@@ -37,6 +38,7 @@ export default function App() {
               <Route path="/inbox" element={<Inbox />} />
               <Route path="/play" element={<SpaceGame />} />
               <Route path="/special-events" element={<SpecialEvents />} />
+              <Route path="/sign-up" element={<SignUp />} />
             </Routes>
           </motion.main>
         </AnimatePresence>
